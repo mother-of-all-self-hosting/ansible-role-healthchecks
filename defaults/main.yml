@@ -125,7 +125,7 @@ healthchecks_environment_variable_ping_body_limit: 10000
 healthchecks_environment_variable_ping_email_domain: "{{ healthchecks_hostname }}"
 
 # Controls the PING_ENDPOINT environment variable
-healthchecks_environment_variable_ping_endpoint: "{{ healthchecks_environment_variable_site_root }}/ping/"
+healthchecks_environment_variable_ping_endpoint: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}{{ healthchecks_path_prefix }}{{ '' if healthchecks_path_prefix == '/' else '/' }}ping/"
 
 # Controls the SECRET_KEY environment variable
 healthchecks_environment_variable_secret_key: ''
