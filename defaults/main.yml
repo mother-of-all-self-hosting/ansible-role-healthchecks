@@ -109,14 +109,10 @@ healthchecks_container_extra_arguments: []
 healthchecks_environment_variable_debug: false
 
 # Controls the SITE_ROOT environment variable
-# Also see `healthchecks_environment_variable_script_name`
-healthchecks_environment_variable_site_root: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}{{ healthchecks_path_prefix }}"
+healthchecks_environment_variable_site_root: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}"
 
 # Controls the SITE_NAME environment variable
 healthchecks_environment_variable_site_name: Healthchecks
-
-# Controls the SCRIPT_NAME environment variable
-healthchecks_environment_variable_script_name: "{{ healthchecks_path_prefix }}"
 
 # Controls the PING_BODY_LIMIT environment variable
 healthchecks_environment_variable_ping_body_limit: 10000
