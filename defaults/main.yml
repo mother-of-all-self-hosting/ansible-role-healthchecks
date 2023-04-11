@@ -1,0 +1,197 @@
+---
+
+# Project source code URL: https://github.com/healthchecks/healthchecks
+
+healthchecks_enabled: true
+
+healthchecks_identifier: healthchecks
+
+healthchecks_uid: ''
+healthchecks_gid: ''
+
+healthchecks_version: v2.8
+
+healthchecks_scheme: https
+
+# The hostname at which healthchecks is served.
+healthchecks_hostname: ''
+
+# The path at which healthchecks is served.
+# This value must either be `/` or not end with a slash (e.g. `/healthchecks`).
+healthchecks_path_prefix: /
+
+healthchecks_base_path: "/{{ healthchecks_identifier }}"
+
+healthchecks_container_image: "{{ healthchecks_container_image_registry_prefix }}healthchecks/healthchecks:{{ healthchecks_container_image_tag }}"
+healthchecks_container_image_registry_prefix: docker.io/
+healthchecks_container_image_tag: "{{ healthchecks_version }}"
+healthchecks_container_image_force_pull: "{{ healthchecks_container_image.endswith(':latest') }}"
+
+# The base container network. It will be auto-created by this role if it doesn't exist already.
+healthchecks_container_network: "{{ healthchecks_identifier }}"
+
+# A list of additional container networks that the container would be connected to.
+# The role does not create these networks, so make sure they already exist.
+# Use this to expose this container to another reverse proxy, which runs in a different container network.
+healthchecks_container_additional_networks: "{{ healthchecks_container_additional_networks_auto + healthchecks_container_additional_networks_custom }}"
+healthchecks_container_additional_networks_auto: []
+healthchecks_container_additional_networks_custom: []
+
+# Specifies how the container publishes its HTTP port
+#
+# Takes an "<ip>:<port>" value (e.g. "127.0.0.1:8000"), just a port number or an empty string to not expose.
+healthchecks_container_http_bind_port: ''
+
+# healthchecks_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
+# See `../templates/labels.j2` for details.
+#
+# To inject your own other container labels, see `healthchecks_container_labels_additional_labels`.
+healthchecks_container_labels_traefik_enabled: true
+healthchecks_container_labels_traefik_docker_network: "{{ healthchecks_container_network }}"
+healthchecks_container_labels_traefik_hostname: "{{ healthchecks_hostname }}"
+# The path prefix must either be `/` or not end with a slash (e.g. `/healthchecks`).
+healthchecks_container_labels_traefik_path_prefix: "{{ healthchecks_path_prefix }}"
+healthchecks_container_labels_traefik_rule: "Host(`{{ healthchecks_container_labels_traefik_hostname }}`){% if healthchecks_container_labels_traefik_path_prefix != '/' %} && PathPrefix(`{{ healthchecks_container_labels_traefik_path_prefix }}`){% endif %}"
+healthchecks_container_labels_traefik_priority: 0
+healthchecks_container_labels_traefik_entrypoints: web-secure
+healthchecks_container_labels_traefik_tls: "{{ healthchecks_container_labels_traefik_entrypoints != 'web' }}"
+healthchecks_container_labels_traefik_tls_certResolver: default  # noqa var-naming
+
+# Controls which additional headers to attach to all HTTP requests.
+# To add your own custom request headers, use `healthchecks_container_labels_traefik_additional_response_headers_custom`
+healthchecks_container_labels_traefik_additional_request_headers: "{{ healthchecks_container_labels_traefik_additional_request_headers_auto | combine(healthchecks_container_labels_traefik_additional_request_headers_custom) }}"
+healthchecks_container_labels_traefik_additional_request_headers_auto: {}
+healthchecks_container_labels_traefik_additional_request_headers_custom: {}
+
+# Controls which additional headers to attach to all HTTP responses.
+# To add your own custom response headers, use `healthchecks_container_labels_traefik_additional_response_headers_custom`
+healthchecks_container_labels_traefik_additional_response_headers: "{{ healthchecks_container_labels_traefik_additional_response_headers_auto | combine(healthchecks_container_labels_traefik_additional_response_headers_custom) }}"
+healthchecks_container_labels_traefik_additional_response_headers_auto: |
+  {{
+    {}
+    | combine ({'X-XSS-Protection': healthchecks_http_header_xss_protection} if healthchecks_http_header_xss_protection else {})
+    | combine ({'X-Frame-Options': healthchecks_http_header_frame_options} if healthchecks_http_header_frame_options else {})
+    | combine ({'X-Content-Type-Options': healthchecks_http_header_content_type_options} if healthchecks_http_header_content_type_options else {})
+    | combine ({'Content-Security-Policy': healthchecks_http_header_content_security_policy} if healthchecks_http_header_content_security_policy else {})
+    | combine ({'Permission-Policy': healthchecks_http_header_content_permission_policy} if healthchecks_http_header_content_permission_policy else {})
+    | combine ({'Strict-Transport-Security': healthchecks_http_header_strict_transport_security} if healthchecks_http_header_strict_transport_security and healthchecks_container_labels_traefik_tls else {})
+  }}
+healthchecks_container_labels_traefik_additional_response_headers_custom: {}
+
+# healthchecks_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
+# See `../templates/labels.j2` for details.
+#
+# Example:
+# healthchecks_container_labels_additional_labels: |
+#   my.label=1
+#   another.label="here"
+healthchecks_container_labels_additional_labels: ''
+
+# A list of additional "volumes" to mount in the container.
+#
+# See the `--mount` documentation for the `docker run` command.
+#
+# Example:
+# healthchecks_container_additional_volumes:
+#   - type: bind
+#     src: /path/on/the/host
+#     dst: /data
+#   - type: bind
+#     src: /another-path/on/the/host
+#     dst: /read-only
+#     options: readonly
+healthchecks_container_additional_volumes: []
+
+# A list of extra arguments to pass to the container
+healthchecks_container_extra_arguments: []
+
+# Controls the DEBUG environment variable
+healthchecks_environment_variable_debug: false
+
+# Controls the SITE_ROOT environment variable
+# Also see `healthchecks_environment_variable_script_name`
+healthchecks_environment_variable_site_root: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}{{ healthchecks_path_prefix }}"
+
+# Controls the SITE_NAME environment variable
+healthchecks_environment_variable_site_name: Healthchecks
+
+# Controls the SCRIPT_NAME environment variable
+healthchecks_environment_variable_script_name: "{{ healthchecks_path_prefix }}"
+
+# Controls the PING_BODY_LIMIT environment variable
+healthchecks_environment_variable_ping_body_limit: 10000
+
+# Controls the PING_EMAIL_DOMAIN environment variable
+healthchecks_environment_variable_ping_email_domain: "{{ healthchecks_hostname }}"
+
+# Controls the PING_ENDPOINT environment variable
+healthchecks_environment_variable_ping_endpoint: "{{ healthchecks_environment_variable_site_root }}/ping/"
+
+# Controls the SECRET_KEY environment variable
+healthchecks_environment_variable_secret_key: ''
+
+# Additional environment variables.
+healthchecks_environment_variables_additional_variables: ''
+
+# Specifies the value of the `X-XSS-Protection` header
+# Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
+#
+# Learn more about it is here:
+# - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+# - https://portswigger.net/web-security/cross-site-scripting/reflected
+healthchecks_http_header_xss_protection: "1; mode=block"
+
+# Specifies the value of the `X-Frame-Options` header which controls whether framing can happen.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+healthchecks_http_header_frame_options: SAMEORIGIN
+
+# Specifies the value of the `X-Content-Type-Options` header.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+healthchecks_http_header_content_type_options: nosniff
+
+# Specifies the value of the `Content-Security-Policy` header.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+healthchecks_http_header_content_security_policy: frame-ancestors 'self'
+
+# Specifies the value of the `Permission-Policy` header.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permission-Policy
+healthchecks_http_header_content_permission_policy: "{{ 'interest-cohort=()' if healthchecks_floc_optout_enabled else '' }}"
+
+# Specifies the value of the `Strict-Transport-Security` header.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+healthchecks_http_header_strict_transport_security: "max-age=31536000; includeSubDomains{{ '; preload' if healthchecks_hsts_preload_enabled else '' }}"
+
+# Controls whether to send a "Permissions-Policy interest-cohort=();" header along with all responses
+#
+# Learn more about what it is here:
+# - https://www.eff.org/deeplinks/2021/03/googles-floc-terrible-idea
+# - https://paramdeo.com/blog/opting-your-website-out-of-googles-floc-network
+# - https://amifloced.org/
+#
+# Of course, a better solution is to just stop using browsers (like Chrome), which participate in such tracking practices.
+# See: `healthchecks_content_permission_policy`
+healthchecks_floc_optout_enabled: true
+
+# Controls if HSTS preloading is enabled
+#
+# In its strongest and recommended form, the [HSTS policy](https://www.chromium.org/hsts) includes all subdomains, and
+# indicates a willingness to be "preloaded" into browsers:
+# `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`
+# For more information visit:
+# - https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+# - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+# - https://hstspreload.org/#opt-in
+# See: `healthchecks_http_header_strict_transport_security`
+healthchecks_hsts_preload_enabled: false
+
+# List of systemd services that healthchecks.service depends on
+healthchecks_systemd_required_services_list: "{{ healthchecks_systemd_required_systemd_services_list_default + healthchecks_systemd_required_systemd_services_list_auto + healthchecks_systemd_required_systemd_services_list_custom }}"
+healthchecks_systemd_required_systemd_services_list_default: ['docker.service']
+healthchecks_systemd_required_systemd_services_list_auto: []
+healthchecks_systemd_required_systemd_services_list_custom: []
+
+healthchecks_database_username: healthchecks
+healthchecks_database_password: ''
+healthchecks_database_hostname: ''
+healthchecks_database_port: 5432
+healthchecks_database_name: healthchecks

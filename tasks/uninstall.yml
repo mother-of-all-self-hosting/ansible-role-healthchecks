@@ -1,0 +1,25 @@
+---
+
+- name: Check existence of Healthchecks systemd service
+  ansible.builtin.stat:
+    path: "{{ devture_systemd_docker_base_systemd_path }}/{{ healthchecks_identifier }}.service"
+  register: healthchecks_service_stat
+
+- when: healthchecks_service_stat.stat.exists | bool
+  block:
+    - name: Ensure Healthchecks systemd service is stopped
+      ansible.builtin.service:
+        name: "{{ healthchecks_identifier }}"
+        state: stopped
+        enabled: false
+        daemon_reload: true
+
+    - name: Ensure Healthchecks systemd service does not exist
+      ansible.builtin.file:
+        path: "{{ devture_systemd_docker_base_systemd_path }}/{{ healthchecks_identifier }}.service"
+        state: absent
+
+    - name: Ensure Healthchecks path doesn't exist
+      ansible.builtin.file:
+        path: "{{ healthchecks_base_path }}"
+        state: absent

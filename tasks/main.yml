@@ -1,0 +1,20 @@
+---
+
+- block:
+    - when: healthchecks_enabled | bool
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
+
+    - when: healthchecks_enabled | bool
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
+  tags:
+    - setup-all
+    - setup-healthchecks
+    - install-all
+    - install-healthchecks
+
+- block:
+    - when: not healthchecks_enabled | bool
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
+  tags:
+    - setup-all
+    - setup-healthchecks

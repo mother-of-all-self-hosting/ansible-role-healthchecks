@@ -1,0 +1,71 @@
+{% if healthchecks_container_labels_traefik_enabled %}
+traefik.enable=true
+
+{% if healthchecks_container_labels_traefik_docker_network %}
+traefik.docker.network={{ healthchecks_container_labels_traefik_docker_network }}
+{% endif %}
+
+{% set middlewares = [] %}
+
+{% if healthchecks_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ healthchecks_identifier }}-slashless-redirect.redirectregex.regex=^({{ healthchecks_container_labels_traefik_path_prefix | quote }})$
+traefik.http.middlewares.{{ healthchecks_identifier }}-slashless-redirect.redirectregex.replacement=${1}/
+{% set middlewares = middlewares + [healthchecks_identifier + '-slashless-redirect'] %}
+{% endif %}
+
+{#
+	We need to strip the prefix for all routes except for /static routes.
+
+	We do this by first rewriting /prefix/static to /another/static,
+	then stripping /prefix, then restoring /another/static to /prefix/static.
+#}
+
+{% if healthchecks_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ healthchecks_identifier }}-preserve-static.replacepathregex.regex=^{{ healthchecks_container_labels_traefik_path_prefix }}/static/(.*)
+traefik.http.middlewares.{{ healthchecks_identifier }}-preserve-static.replacepathregex.replacement=/another/static/${1}
+{% set middlewares = middlewares + [healthchecks_identifier + '-preserve-static'] %}
+{% endif %}
+
+{% if healthchecks_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ healthchecks_identifier }}-strip-prefix.stripprefix.prefixes={{ healthchecks_container_labels_traefik_path_prefix }}
+{% set middlewares = middlewares + [healthchecks_identifier + '-strip-prefix'] %}
+{% endif %}
+
+{% if healthchecks_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ healthchecks_identifier }}-restore-static.replacepathregex.regex=^/another/static/(.*)
+traefik.http.middlewares.{{ healthchecks_identifier }}-restore-static.replacepathregex.replacement={{ healthchecks_container_labels_traefik_path_prefix }}/static/${1}
+{% set middlewares = middlewares + [healthchecks_identifier + '-restore-static'] %}
+{% endif %}
+
+{% if healthchecks_container_labels_traefik_additional_request_headers.keys() | length > 0 %}
+{% for name, value in healthchecks_container_labels_traefik_additional_request_headers.items() %}
+traefik.http.middlewares.{{ healthchecks_identifier }}-add-request-headers.headers.customrequestheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [healthchecks_identifier + '-add-request-headers'] %}
+{% endif %}
+
+{% if healthchecks_container_labels_traefik_additional_response_headers.keys() | length > 0 %}
+{% for name, value in healthchecks_container_labels_traefik_additional_response_headers.items() %}
+traefik.http.middlewares.{{ healthchecks_identifier }}-add-response-headers.headers.customresponseheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [healthchecks_identifier + '-add-response-headers'] %}
+{% endif %}
+
+traefik.http.routers.{{ healthchecks_identifier }}.rule={{ healthchecks_container_labels_traefik_rule }}
+{% if healthchecks_container_labels_traefik_priority | int > 0 %}
+traefik.http.routers.{{ healthchecks_identifier }}.priority={{ healthchecks_container_labels_traefik_priority }}
+{% endif %}
+traefik.http.routers.{{ healthchecks_identifier }}.service={{ healthchecks_identifier }}
+{% if middlewares | length > 0 %}
+traefik.http.routers.{{ healthchecks_identifier }}.middlewares={{ middlewares | join(',') }}
+{% endif %}
+traefik.http.routers.{{ healthchecks_identifier }}.entrypoints={{ healthchecks_container_labels_traefik_entrypoints }}
+traefik.http.routers.{{ healthchecks_identifier }}.tls={{ healthchecks_container_labels_traefik_tls | to_json }}
+{% if healthchecks_container_labels_traefik_tls %}
+traefik.http.routers.{{ healthchecks_identifier }}.tls.certResolver={{ healthchecks_container_labels_traefik_tls_certResolver }}
+{% endif %}
+
+traefik.http.services.{{ healthchecks_identifier }}.loadbalancer.server.port=8000
+{% endif %}
+
+{{ healthchecks_container_labels_additional_labels }}
