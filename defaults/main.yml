@@ -108,6 +108,27 @@ healthchecks_container_extra_arguments: []
 # Controls the DEBUG environment variable
 healthchecks_environment_variable_debug: false
 
+# Controls the DEFAULT_FROM_EMAIL environment variable
+healthchecks_environment_variable_default_from_email: ''
+
+# Controls the EMAIL_HOST environment variable
+healthchecks_environment_variable_email_host: ''
+
+# Controls the EMAIL_PORT environment variable
+healthchecks_environment_variable_email_port: 587
+
+# Controls the EMAIL_USE_TLS environment variable
+healthchecks_environment_variable_email_use_tls: true
+
+# Controls the EMAIL_USE_VERIFICATION environment variable
+healthchecks_environment_variable_email_use_verification: true
+
+# Controls the EMAIL_HOST_USER environment variable
+healthchecks_environment_variable_email_host_user: ''
+
+# Controls the EMAIL_HOST_PASSWORD environment variable
+healthchecks_environment_variable_email_host_password: ''
+
 # Controls the SITE_ROOT environment variable
 healthchecks_environment_variable_site_root: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}"
 
