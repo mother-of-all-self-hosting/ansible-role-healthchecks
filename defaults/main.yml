@@ -207,6 +207,12 @@ healthchecks_systemd_required_systemd_services_list_default: ['docker.service']
 healthchecks_systemd_required_systemd_services_list_auto: []
 healthchecks_systemd_required_systemd_services_list_custom: []
 
+# List of systemd services that healthchecks.service wants
+healthchecks_systemd_wanted_services_list: "{{ healthchecks_systemd_wanted_systemd_services_list_default + healthchecks_systemd_wanted_systemd_services_list_auto + healthchecks_systemd_wanted_systemd_services_list_custom }}"
+healthchecks_systemd_wanted_systemd_services_list_default: []
+healthchecks_systemd_wanted_systemd_services_list_auto: []
+healthchecks_systemd_wanted_systemd_services_list_custom: []
+
 healthchecks_database_username: healthchecks
 healthchecks_database_password: ''
 healthchecks_database_hostname: ''
