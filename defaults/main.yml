@@ -9,7 +9,7 @@ healthchecks_identifier: healthchecks
 healthchecks_uid: ''
 healthchecks_gid: ''
 
-healthchecks_version: v3.2
+healthchecks_version: v3.3
 
 healthchecks_scheme: https
 
