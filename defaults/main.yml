@@ -210,7 +210,7 @@ healthchecks_hsts_preload_enabled: false
 
 # List of systemd services that healthchecks.service depends on
 healthchecks_systemd_required_services_list: "{{ healthchecks_systemd_required_systemd_services_list_default + healthchecks_systemd_required_systemd_services_list_auto + healthchecks_systemd_required_systemd_services_list_custom }}"
-healthchecks_systemd_required_systemd_services_list_default: ['docker.service']
+healthchecks_systemd_required_systemd_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 healthchecks_systemd_required_systemd_services_list_auto: []
 healthchecks_systemd_required_systemd_services_list_custom: []
 
