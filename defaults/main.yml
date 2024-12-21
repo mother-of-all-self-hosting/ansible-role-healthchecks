@@ -109,6 +109,11 @@ healthchecks_container_extra_arguments: []
 # NOTE: use it only when you want to have 2 or more admins, otherwise it's useless
 healthchecks_environment_variable_admins: []
 
+# Controls the ALLOWED_HOSTS environment variable.
+# See: https://github.com/healthchecks/healthchecks/releases/tag/v3.9
+# Example: "first.example.org,second.example.org"
+healthchecks_environment_variable_allowed_hosts: "{{ healthchecks_hostname }}"
+
 # URL of a custom logo image
 healthchecks_environment_variable_site_logo_url: ''
 
