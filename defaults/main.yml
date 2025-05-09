@@ -14,7 +14,7 @@ healthchecks_uid: ''
 healthchecks_gid: ''
 
 # renovate: datasource=docker depName=healthchecks/healthchecks
-healthchecks_version: v3.9
+healthchecks_version: v3.10
 
 healthchecks_scheme: https
 
