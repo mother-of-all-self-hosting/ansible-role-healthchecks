@@ -1,4 +1,8 @@
-# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023 - 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2024 Sergio Durigan Junior
+# SPDX-FileCopyrightText: 2025 MASH project contributors
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -28,8 +32,10 @@ healthchecks_path_prefix: /
 healthchecks_base_path: "/{{ healthchecks_identifier }}"
 
 healthchecks_container_image: "{{ healthchecks_container_image_registry_prefix }}healthchecks/healthchecks:{{ healthchecks_container_image_tag }}"
-healthchecks_container_image_registry_prefix: docker.io/
 healthchecks_container_image_tag: "{{ healthchecks_version }}"
+healthchecks_container_image_registry_prefix: "{{ healthchecks_container_image_registry_prefix_upstream }}"
+healthchecks_container_image_registry_prefix_upstream: "{{ healthchecks_container_image_registry_prefix_upstream_default }}"
+healthchecks_container_image_registry_prefix_upstream_default: docker.io/
 healthchecks_container_image_force_pull: "{{ healthchecks_container_image.endswith(':latest') }}"
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
