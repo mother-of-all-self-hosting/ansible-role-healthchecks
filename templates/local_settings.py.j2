@@ -1,3 +1,9 @@
+{#
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
 FORCE_SCRIPT_NAME = "{{ healthchecks_path_prefix }}{{ '' if healthchecks_path_prefix == '/' else '/' }}"
 
 STATIC_URL = "{{ healthchecks_path_prefix }}{{ '' if healthchecks_path_prefix == '/' else '/' }}static/"
