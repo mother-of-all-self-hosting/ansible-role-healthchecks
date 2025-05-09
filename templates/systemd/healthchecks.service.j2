@@ -31,7 +31,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
 			--read-only \
 			--network={{ healthchecks_container_network }} \
 			{% if healthchecks_container_http_bind_port %}
-			-p {{ healthchecks_container_http_bind_port }}:8000 \
+			-p {{ healthchecks_container_http_bind_port }}:{{ healthchecks_container_http_port }} \
 			{% endif %}
 			--env-file={{ healthchecks_base_path }}/env \
 			--label-file={{ healthchecks_base_path }}/labels \

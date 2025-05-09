@@ -53,6 +53,9 @@ healthchecks_container_additional_networks_custom: []
 # Takes an "<ip>:<port>" value (e.g. "127.0.0.1:8000"), just a port number or an empty string to not expose.
 healthchecks_container_http_bind_port: ''
 
+# The port number in the container
+healthchecks_container_http_port: 8000
+
 # healthchecks_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
 # See `../templates/labels.j2` for details.
 #
