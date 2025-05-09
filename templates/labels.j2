@@ -71,7 +71,7 @@ traefik.http.routers.{{ healthchecks_identifier }}.tls={{ healthchecks_container
 traefik.http.routers.{{ healthchecks_identifier }}.tls.certResolver={{ healthchecks_container_labels_traefik_tls_certResolver }}
 {% endif %}
 
-traefik.http.services.{{ healthchecks_identifier }}.loadbalancer.server.port=8000
+traefik.http.services.{{ healthchecks_identifier }}.loadbalancer.server.port={{ healthchecks_container_http_port }}
 {% endif %}
 
 {{ healthchecks_container_labels_additional_labels }}
