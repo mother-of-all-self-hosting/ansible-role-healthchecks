@@ -189,7 +189,7 @@ healthchecks_environment_variable_admins: []
 
 # Controls the ALLOWED_HOSTS environment variable.
 # See: https://github.com/healthchecks/healthchecks/releases/tag/v3.9
-# Example: "first.example.org,second.example.org"
+# Example: "first.example.com,second.example.com"
 healthchecks_environment_variable_allowed_hosts: "{{ healthchecks_hostname }}"
 
 # URL of a custom logo image
