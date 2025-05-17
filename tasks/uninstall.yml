@@ -23,7 +23,7 @@
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ healthchecks_identifier }}.service"
         state: absent
 
-    - name: Ensure Healthchecks path doesn't exist
+    - name: Ensure Healthchecks path does not exist
       ansible.builtin.file:
         path: "{{ healthchecks_base_path }}"
         state: absent
