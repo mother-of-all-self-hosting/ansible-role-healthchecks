@@ -5,7 +5,7 @@
 
 ---
 
-- name: Ensure Healthchecks paths exist
+- name: Ensure Healthchecks path exists
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -49,3 +49,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/healthchecks.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ healthchecks_identifier }}.service"
+    mode: 0644
