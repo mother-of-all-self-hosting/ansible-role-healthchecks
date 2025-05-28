@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
-
 - name: (Deprecation) Catch and report renamed settings
   ansible.builtin.fail:
     msg: >-
@@ -12,12 +10,12 @@
       Please change your configuration to rename the variable (`{{ item.old }}` -> `{{ item.new }}`).
   when: "item.old in vars"
   with_items:
-    - {'old': 'healthchecks_systemd_required_systemd_services_list_default', 'new': 'healthchecks_systemd_required_services_list_default'}
-    - {'old': 'healthchecks_systemd_required_systemd_services_list_auto', 'new': 'healthchecks_systemd_required_services_list_auto'}
-    - {'old': 'healthchecks_systemd_required_systemd_services_list_custom', 'new': 'healthchecks_systemd_required_services_list_custom'}
-    - {'old': 'healthchecks_systemd_wanted_systemd_services_list_default', 'new': 'healthchecks_systemd_wanted_services_list_default'}
-    - {'old': 'healthchecks_systemd_wanted_systemd_services_list_auto', 'new': 'healthchecks_systemd_wanted_services_list_auto'}
-    - {'old': 'healthchecks_systemd_wanted_systemd_services_list_custom', 'new': 'healthchecks_systemd_wanted_services_list_custom'}
+    - { "old": "healthchecks_systemd_required_systemd_services_list_default", "new": "healthchecks_systemd_required_services_list_default" }
+    - { "old": "healthchecks_systemd_required_systemd_services_list_auto", "new": "healthchecks_systemd_required_services_list_auto" }
+    - { "old": "healthchecks_systemd_required_systemd_services_list_custom", "new": "healthchecks_systemd_required_services_list_custom" }
+    - { "old": "healthchecks_systemd_wanted_systemd_services_list_default", "new": "healthchecks_systemd_wanted_services_list_default" }
+    - { "old": "healthchecks_systemd_wanted_systemd_services_list_auto", "new": "healthchecks_systemd_wanted_services_list_auto" }
+    - { "old": "healthchecks_systemd_wanted_systemd_services_list_custom", "new": "healthchecks_systemd_wanted_services_list_custom" }
 
 - name: Fail if required Healthchecks settings not defined
   ansible.builtin.fail:
@@ -35,7 +33,8 @@
     - healthchecks_database_password
     - healthchecks_environment_variable_secret_key
 
-- when: healthchecks_container_labels_traefik_enabled | bool
+- name: Run if Traefik is enabled
+  when: healthchecks_container_labels_traefik_enabled | bool
   block:
     - name: Fail if required Healthchecks Traefik settings not defined
       ansible.builtin.fail:
