@@ -4,6 +4,7 @@
 
 ---
 - name: Perform Healthchecks installation tasks
+  when: healthchecks_enabled | bool
   tags:
     - setup-all
     - setup-healthchecks
@@ -11,17 +12,15 @@
     - install-healthchecks
   block:
     - name: Validate Healthchecks configuration
-      when: healthchecks_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
     - name: Install Healthchecks
-      when: healthchecks_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
 
 - name: Perform Healthchecks uninstallation tasks
+  when: not healthchecks_enabled | bool
   tags:
     - setup-all
     - setup-healthchecks
   block:
     - name: Uninstall Healthchecks
-      when: not healthchecks_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
