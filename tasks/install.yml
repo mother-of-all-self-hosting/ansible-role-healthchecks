@@ -76,7 +76,8 @@
           .
       environment:
         DOCKER_BUILDKIT: "1"
-      changed_when: true
+      register: result
+      changed_when: "'Successfully built' in result.stdout"
 
 - name: Ensure Healthchecks container network is created via community.docker.docker_network
   when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
