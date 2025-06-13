@@ -37,7 +37,6 @@ healthchecks_container_image_registry_prefix_upstream_default: docker.io/
 healthchecks_container_image_force_pull: "{{ healthchecks_container_image.endswith(':latest') }}"
 
 healthchecks_container_image_self_build: false
-healthchecks_container_image_name: "healthchecks/healthchecks:{{ healthchecks_container_repo_version }}"
 healthchecks_container_repo: "https://github.com/healthchecks/healthchecks.git"
 healthchecks_container_repo_version: "{{ healthchecks_version if healthchecks_version != 'latest' else 'master' }}"
 healthchecks_container_src_files_path: "{{ healthchecks_base_path }}/docker-src"
