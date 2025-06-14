@@ -41,7 +41,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% for arg in healthchecks_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}
-      {{ healthchecks_container_image }}
+      {{ healthchecks_container_image_self_build_name if healthchecks_container_image_self_build else healthchecks_container_image }}
 
 {% for network in healthchecks_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ healthchecks_identifier }}
