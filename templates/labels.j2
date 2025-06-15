@@ -20,10 +20,10 @@ traefik.http.middlewares.{{ healthchecks_identifier }}-slashless-redirect.redire
 {% endif %}
 
 {#
-	We need to strip the prefix for all routes except for /static routes.
+  We need to strip the prefix for all routes except for /static routes.
 
-	We do this by first rewriting /prefix/static to /another/static,
-	then stripping /prefix, then restoring /another/static to /prefix/static.
+  We do this by first rewriting /prefix/static to /another/static,
+  then stripping /prefix, then restoring /another/static to /prefix/static.
 #}
 
 {% if healthchecks_container_labels_traefik_path_prefix != '/' %}
