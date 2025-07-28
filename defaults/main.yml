@@ -93,7 +93,7 @@ healthchecks_container_labels_traefik_tls: "{{ healthchecks_container_labels_tra
 healthchecks_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
 # Controls which additional headers to attach to all HTTP requests.
-# To add your own custom request headers, use `healthchecks_container_labels_traefik_additional_response_headers_custom`
+# To add your own custom request headers, use `healthchecks_container_labels_traefik_additional_request_headers_custom`
 healthchecks_container_labels_traefik_additional_request_headers: "{{ healthchecks_container_labels_traefik_additional_request_headers_auto | combine(healthchecks_container_labels_traefik_additional_request_headers_custom) }}"
 healthchecks_container_labels_traefik_additional_request_headers_auto: {}
 healthchecks_container_labels_traefik_additional_request_headers_custom: {}
