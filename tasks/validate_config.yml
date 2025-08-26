@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
 # SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
@@ -32,6 +33,14 @@
     - healthchecks_database_hostname
     - healthchecks_database_password
     - healthchecks_environment_variable_secret_key
+
+- name: Fail if SMTP settings are missing (and SMTP is enabled by setting host)
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) to correctly set up email via SMTP.
+  when: "healthchecks_environment_variable_email_host != '' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
+    - healthchecks_environment_variable_default_from_email
 
 - name: Run if Traefik is enabled
   when: healthchecks_container_labels_traefik_enabled | bool
