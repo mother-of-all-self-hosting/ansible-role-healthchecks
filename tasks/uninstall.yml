@@ -24,38 +24,39 @@
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ healthchecks_identifier }}.service"
         state: absent
 
-    - name: Ensure Forgejo support files do not exist
+    - name: Ensure Healthchecks support files do not exist
       ansible.builtin.file:
-        path: "{{ forgejo_base_path }}/{{ item }}"
+        path: "{{ healthchecks_base_path }}/{{ item }}"
         state: absent
       with_items:
         - env
         - labels
+        - local_settings.py
 
-    - name: Ensure Forgejo image source files path does not exist
+    - name: Ensure Healthchecks image source files path does not exist
       ansible.builtin.file:
-        path: "{{ forgejo_container_image_self_build_src_files_path }}"
+        path: "{{ healthchecks_container_image_self_build_src_files_path }}"
         state: absent
 
-    - name: Ensure Forgejo local config path does not exist if empty
+    - name: Ensure Healthchecks local config path does not exist if empty
       ansible.builtin.command:
-        cmd: "rmdir {{ forgejo_config_path }}"
-      register: forgejo_config_path_deletion_result
-      changed_when: forgejo_config_path_deletion_result.rc == 0
+        cmd: "rmdir {{ healthchecks_config_path }}"
+      register: healthchecks_config_path_deletion_result
+      changed_when: healthchecks_config_path_deletion_result.rc == 0
       failed_when: false
 
-    - name: Ensure Forgejo local data path does not exist if empty
+    - name: Ensure Healthchecks local data path does not exist if empty
       ansible.builtin.command:
-        cmd: "rmdir {{ forgejo_data_path }}"
-      register: forgejo_data_path_deletion_result
-      changed_when: forgejo_data_path_deletion_result.rc == 0
+        cmd: "rmdir {{ healthchecks_data_path }}"
+      register: healthchecks_data_path_deletion_result
+      changed_when: healthchecks_data_path_deletion_result.rc == 0
       failed_when: false
 
-    - name: Ensure Forgejo base path does not exist if empty
+    - name: Ensure Healthchecks base path does not exist if empty
       ansible.builtin.command:
-        cmd: "rmdir {{ forgejo_base_path }}"
-      register: forgejo_base_path_deletion_result
-      changed_when: forgejo_base_path_deletion_result.rc == 0
+        cmd: "rmdir {{ healthchecks_base_path }}"
+      register: healthchecks_base_path_deletion_result
+      changed_when: healthchecks_base_path_deletion_result.rc == 0
       failed_when: false
 
     - name: Ensure Healthchecks container network does not exist via community.docker.docker_network
@@ -73,20 +74,20 @@
       register: network_deletion_result
       changed_when: healthchecks_container_network in network_deletion_result.stdout
 
-- name: Check existence of Forgejo local data path
+- name: Check existence of Healthchecks local data path
   ansible.builtin.stat:
-    path: "{{ forgejo_data_path }}"
-  register: forgejo_data_path_stat
+    path: "{{ healthchecks_data_path }}"
+  register: healthchecks_data_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- name: Notify if Forgejo local data remains
-  when: forgejo_data_path_stat.stat.exists | bool
+- name: Notify if Healthchecks local data remains
+  when: healthchecks_data_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
       {{
         devture_playbook_runtime_messages_list | default([])
         +
         [
-          "Note: As the local Forgejo instance has been removed, some old data remains in `" + forgejo_data_path + "`. Feel free to delete it."
+          "Note: As the local Healthchecks instance has been removed, some old data remains in `" + healthchecks_data_path + "`. Feel free to delete it."
         ]
       }}
