@@ -38,13 +38,6 @@
         path: "{{ healthchecks_container_image_self_build_src_files_path }}"
         state: absent
 
-    - name: Ensure Healthchecks local config path does not exist if empty
-      ansible.builtin.command:
-        cmd: "rmdir {{ healthchecks_config_path }}"
-      register: healthchecks_config_path_deletion_result
-      changed_when: healthchecks_config_path_deletion_result.rc == 0
-      failed_when: false
-
     - name: Ensure Healthchecks local data path does not exist if empty
       ansible.builtin.command:
         cmd: "rmdir {{ healthchecks_data_path }}"
