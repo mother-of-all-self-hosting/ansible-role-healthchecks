@@ -16,6 +16,14 @@
     - name: Install Healthchecks
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
 
+- name: Perform Healthchecks superuser creation tasks
+  when: healthchecks_enabled | bool
+  tags:
+    - createsuperuser-healthchecks
+  block:
+    - name: Run Healthchecks `createsuperuser` command
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/createsuperuser.yml"
+
 - name: Perform Healthchecks uninstallation tasks
   when: not healthchecks_enabled | bool
   tags:

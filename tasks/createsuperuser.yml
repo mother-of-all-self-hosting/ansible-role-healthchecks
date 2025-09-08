@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+# The command for running `createsuperuser`: `ansible-playbook -i inventory/hosts setup.yml --tags=createsuperuser-healthchecks -e email=EMAIL_ADDRESS_HERE -e password=PASSWORD_HERE`
+
+- name: Fail if playbook called incorrectly
+  ansible.builtin.fail:
+    msg: "The `email` and `password` variables need to be provided via --extra-vars"
+  when: "email is not defined or password is not defined"
+
+- name: Ensure Healthchecks service is started
+  ansible.builtin.service:
+    name: "{{ healthchecks_identifier }}"
+    state: started
+    daemon_reload: true
+  register: healthchecks_start
+
+- name: Wait a while, so that Healthchecks can manage to start
+  ansible.builtin.pause:
+    seconds: 7
+  when: healthchecks_start.changed | bool
+
+- name: Run Healthchecks 'createsuperuser' command
+  ansible.builtin.command:
+    cmd: |-
+      {{ devture_systemd_docker_base_host_command_docker }} exec
+      --user={{ healthchecks_uid }}:{{ healthchecks_gid }}
+      {{ healthchecks_identifier }}
+      /opt/healthchecks/manage.py
+      createsuperuser
+      --email {{ email }}
+      --password {{ password }}
+  register: result
+  changed_when: result.rc == 0
+  no_log: true # Hide raw password
+
+- name: Display the Healthchecks createsuperuser command result
+  ansible.builtin.debug:
+    msg: "{{ result.stdout }}"
