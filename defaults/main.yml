@@ -13,6 +13,7 @@ healthchecks_enabled: true
 
 healthchecks_identifier: healthchecks
 healthchecks_base_path: "/{{ healthchecks_identifier }}"
+healthchecks_data_path: "{{ healthchecks_base_path }}/data"
 
 # renovate: datasource=docker depName=docker.io/healthchecks/healthchecks
 healthchecks_version: v3.11.2
@@ -188,7 +189,9 @@ healthchecks_database_port: 5432
 healthchecks_database_username: healthchecks
 healthchecks_database_password: ""
 
+# See https://healthchecks.io/docs/self_hosted_configuration/#DB_NAME
 healthchecks_database_name: healthchecks
+healthchecks_database_sqlite_name: /data/hc.sqlite
 
 # Controls the list of admins of the healthchecks instance.
 # NOTE: use it only when you want to have 2 or more admins, otherwise it's useless

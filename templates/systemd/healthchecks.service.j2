@@ -35,6 +35,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --env-file={{ healthchecks_base_path }}/env \
       --label-file={{ healthchecks_base_path }}/labels \
       --mount type=bind,src={{ healthchecks_base_path }}/local_settings.py,dst=/opt/healthchecks/hc/local_settings.py,ro \
+      --mount type=bind,src={{ healthchecks_data_path }},dst=/data \
       {% for volume in healthchecks_container_additional_volumes %}
       --mount type={{ volume.type | default('bind' if '/' in volume.src else 'volume') }},src={{ volume.src }},dst={{ volume.dst }}{{ (',' + volume.options) if volume.options | default('') else '' }} \
       {% endfor %}
