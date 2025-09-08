@@ -175,10 +175,19 @@ healthchecks_systemd_wanted_services_list_default: []
 healthchecks_systemd_wanted_services_list_auto: []
 healthchecks_systemd_wanted_services_list_custom: []
 
-healthchecks_database_username: healthchecks
-healthchecks_database_password: ''
-healthchecks_database_hostname: ''
+# Specify database to use
+# Valid values: mysql, postgres, sqlite
+healthchecks_database_type: postgres
+
+healthchecks_database_mysql_hostname: ""
+healthchecks_database_mysql_port: 3306
+healthchecks_database_mysql_username: healthchecks
+healthchecks_database_mysql_password: ""
+healthchecks_database_hostname: ""
 healthchecks_database_port: 5432
+healthchecks_database_username: healthchecks
+healthchecks_database_password: ""
+
 healthchecks_database_name: healthchecks
 
 # Controls the list of admins of the healthchecks instance.

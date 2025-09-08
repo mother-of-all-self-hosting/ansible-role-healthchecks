@@ -30,9 +30,31 @@
     - healthchecks_hostname
     - healthchecks_path_prefix
     - healthchecks_container_network
+    - healthchecks_environment_variable_secret_key
+
+- name: Fail if Healthchecks database type invalid
+  ansible.builtin.fail:
+    msg: >-
+      healthchecks_database_type must be 'mysql', 'postgres' or 'sqlite'
+  when: "healthchecks_database_type not in ['mysql', 'postgres', 'sqlite']"
+
+- name: Fail if required Healthchecks + MySQL integration settings not defined
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `mysql`
+  when: "healthchecks_database_type == 'mysql' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
+    - healthchecks_database_mysql_hostname
+    - healthchecks_database_mysql_password
+
+- name: Fail if required Healthchecks + Postgres integration settings not defined
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `postgres`
+  when: "healthchecks_database_type == 'postgres' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
     - healthchecks_database_hostname
     - healthchecks_database_password
-    - healthchecks_environment_variable_secret_key
 
 - name: Fail if SMTP settings are missing (and SMTP is enabled by setting host)
   ansible.builtin.fail:
