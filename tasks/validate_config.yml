@@ -17,6 +17,7 @@
     - { "old": "healthchecks_systemd_wanted_systemd_services_list_default", "new": "healthchecks_systemd_wanted_services_list_default" }
     - { "old": "healthchecks_systemd_wanted_systemd_services_list_auto", "new": "healthchecks_systemd_wanted_services_list_auto" }
     - { "old": "healthchecks_systemd_wanted_systemd_services_list_custom", "new": "healthchecks_systemd_wanted_services_list_custom" }
+    - { "old": "healthchecks_http_header_content_permission_policy", "new": "healthchecks_http_header_permissions_policy" }
 
 - name: Fail if required Healthchecks settings not defined
   ansible.builtin.fail:

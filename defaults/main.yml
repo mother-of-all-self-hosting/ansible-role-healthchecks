@@ -100,7 +100,7 @@ healthchecks_container_labels_traefik_additional_response_headers_auto: |
     | combine ({'X-XSS-Protection': healthchecks_http_header_xss_protection} if healthchecks_http_header_xss_protection else {})
     | combine ({'X-Content-Type-Options': healthchecks_http_header_content_type_options} if healthchecks_http_header_content_type_options else {})
     | combine ({'Content-Security-Policy': healthchecks_http_header_content_security_policy} if healthchecks_http_header_content_security_policy else {})
-    | combine ({'Permission-Policy': healthchecks_http_header_content_permission_policy} if healthchecks_http_header_content_permission_policy else {})
+    | combine ({'Permissions-Policy': healthchecks_http_header_permissions_policy} if healthchecks_http_header_permissions_policy else {})
     | combine ({'Strict-Transport-Security': healthchecks_http_header_strict_transport_security} if healthchecks_http_header_strict_transport_security and healthchecks_container_labels_traefik_tls else {})
   }}
 healthchecks_container_labels_traefik_additional_response_headers_custom: {}
@@ -133,9 +133,9 @@ healthchecks_http_header_content_type_options: nosniff
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 healthchecks_http_header_content_security_policy: frame-ancestors 'self'
 
-# Specifies the value of the `Permission-Policy` header.
-# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permission-Policy
-healthchecks_http_header_content_permission_policy: "{{ 'interest-cohort=()' if healthchecks_floc_optout_enabled else '' }}"
+# Specifies the value of the `Permissions-Policy` header.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
+healthchecks_http_header_permissions_policy: "{{ 'interest-cohort=()' if healthchecks_floc_optout_enabled else '' }}"
 
 # Specifies the value of the `Strict-Transport-Security` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
@@ -149,7 +149,7 @@ healthchecks_http_header_strict_transport_security: "max-age=31536000; includeSu
 # - https://amifloced.org/
 #
 # Of course, a better solution is to just stop using browsers (like Chrome), which participate in such tracking practices.
-# See: `healthchecks_content_permission_policy`
+# See: `healthchecks_http_header_permissions_policy`
 healthchecks_floc_optout_enabled: true
 
 # Controls if HSTS preloading is enabled
