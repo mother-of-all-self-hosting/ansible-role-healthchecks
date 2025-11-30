@@ -16,7 +16,7 @@ healthchecks_base_path: "/{{ healthchecks_identifier }}"
 healthchecks_data_path: "{{ healthchecks_base_path }}/data"
 
 # renovate: datasource=docker depName=docker.io/healthchecks/healthchecks
-healthchecks_version: v3.11.2
+healthchecks_version: v3.13.0
 
 healthchecks_uid: ''
 healthchecks_gid: ''
