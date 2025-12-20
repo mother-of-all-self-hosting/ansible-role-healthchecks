@@ -193,6 +193,9 @@ healthchecks_database_password: ""
 healthchecks_database_name: healthchecks
 healthchecks_database_sqlite_name: /data/hc.sqlite
 
+# Specify the timezone
+healthchecks_environment_variables_tz: UTC
+
 # Controls the list of admins of the healthchecks instance.
 # NOTE: use it only when you want to have 2 or more admins, otherwise it's useless
 healthchecks_environment_variable_admins: []
