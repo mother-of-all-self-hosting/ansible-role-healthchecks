@@ -18,11 +18,11 @@ healthchecks_data_path: "{{ healthchecks_base_path }}/data"
 # renovate: datasource=docker depName=docker.io/healthchecks/healthchecks
 healthchecks_version: v3.13
 
-healthchecks_uid: ''
-healthchecks_gid: ''
+healthchecks_uid: ""
+healthchecks_gid: ""
 
 # The hostname at which healthchecks is served.
-healthchecks_hostname: ''
+healthchecks_hostname: ""
 
 healthchecks_scheme: https
 
@@ -46,7 +46,7 @@ healthchecks_container_image_self_build_src_files_path: "{{ healthchecks_base_pa
 # Specifies how the container publishes its HTTP port
 #
 # Takes an "<ip>:<port>" value (e.g. "127.0.0.1:8000"), just a port number or an empty string to not expose.
-healthchecks_container_http_bind_port: ''
+healthchecks_container_http_bind_port: ""
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 healthchecks_container_network: "{{ healthchecks_identifier }}"
@@ -211,16 +211,16 @@ healthchecks_environment_variable_admins: []
 healthchecks_environment_variable_allowed_hosts: "{{ healthchecks_hostname }}"
 
 # URL of a custom logo image
-healthchecks_environment_variable_site_logo_url: ''
+healthchecks_environment_variable_site_logo_url: ""
 
 # Controls the DEBUG environment variable
 healthchecks_environment_variable_debug: false
 
 # Controls the DEFAULT_FROM_EMAIL environment variable
-healthchecks_environment_variable_default_from_email: ''
+healthchecks_environment_variable_default_from_email: ""
 
 # Controls the EMAIL_HOST environment variable
-healthchecks_environment_variable_email_host: ''
+healthchecks_environment_variable_email_host: ""
 
 # Controls the EMAIL_PORT environment variable
 healthchecks_environment_variable_email_port: 587
@@ -232,10 +232,10 @@ healthchecks_environment_variable_email_use_tls: true
 healthchecks_environment_variable_email_use_verification: true
 
 # Controls the EMAIL_HOST_USER environment variable
-healthchecks_environment_variable_email_host_user: ''
+healthchecks_environment_variable_email_host_user: ""
 
 # Controls the EMAIL_HOST_PASSWORD environment variable
-healthchecks_environment_variable_email_host_password: ''
+healthchecks_environment_variable_email_host_password: ""
 
 # Controls the SITE_ROOT environment variable
 healthchecks_environment_variable_site_root: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}"
@@ -253,7 +253,7 @@ healthchecks_environment_variable_ping_email_domain: "{{ healthchecks_hostname }
 healthchecks_environment_variable_ping_endpoint: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}{{ healthchecks_path_prefix }}{{ '' if healthchecks_path_prefix == '/' else '/' }}ping/"
 
 # Controls the SECRET_KEY environment variable
-healthchecks_environment_variable_secret_key: ''
+healthchecks_environment_variable_secret_key: ""
 
 # Additional environment variables.
-healthchecks_environment_variables_additional_variables: ''
+healthchecks_environment_variables_additional_variables: ""
