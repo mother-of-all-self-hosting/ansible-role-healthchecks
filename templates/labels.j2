@@ -74,4 +74,6 @@ traefik.http.routers.{{ healthchecks_identifier }}.tls.certResolver={{ healthche
 traefik.http.services.{{ healthchecks_identifier }}.loadbalancer.server.port={{ healthchecks_container_http_port }}
 {% endif %}
 
-{{ healthchecks_container_labels_additional_labels }}
+{% for arg in healthchecks_container_labels_additional_labels %}
+{{ arg }}
+{% endfor %}

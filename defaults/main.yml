@@ -111,11 +111,11 @@ healthchecks_container_labels_traefik_additional_response_headers_custom: {}
 #
 # Example:
 # healthchecks_container_labels_additional_labels_custom: |
-#   my.label=1
-#   another.label="here"
-healthchecks_container_labels_additional_labels: "{{ healthchecks_container_labels_additional_labels_auto | combine(healthchecks_container_labels_additional_labels_custom) }}"
-healthchecks_container_labels_additional_labels_auto: {}
-healthchecks_container_labels_additional_labels_custom: {}
+#   - my.label=1
+#   - another.label="here"
+healthchecks_container_labels_additional_labels: "{{ healthchecks_container_labels_additional_labels_auto + healthchecks_container_labels_additional_labels_custom }}"
+healthchecks_container_labels_additional_labels_auto: []
+healthchecks_container_labels_additional_labels_custom: []
 
 # A list of extra arguments to pass to the container (`docker create` command)
 healthchecks_container_extra_arguments: "{{ healthchecks_container_extra_arguments_auto + healthchecks_container_extra_arguments_custom }}"
