@@ -21,10 +21,11 @@ healthchecks_version: v3.13
 healthchecks_uid: ""
 healthchecks_gid: ""
 
+# The scheme used for serving healthchecks.
+healthchecks_scheme: https
+
 # The hostname at which healthchecks is served.
 healthchecks_hostname: ""
-
-healthchecks_scheme: https
 
 # The path at which healthchecks is served.
 # This value must either be `/` or not end with a slash (e.g. `/healthchecks`).
@@ -43,10 +44,10 @@ healthchecks_container_image_self_build_repo: "https://github.com/healthchecks/h
 healthchecks_container_image_self_build_repo_version: "{{ healthchecks_version if healthchecks_version != 'latest' else 'master' }}"
 healthchecks_container_image_self_build_src_files_path: "{{ healthchecks_base_path }}/docker-src"
 
-# Specifies how the container publishes its HTTP port
+# Controls whether the container exposes its HTTP port (tcp/8000 in the container).
 #
-# Takes an "<ip>:<port>" value (e.g. "127.0.0.1:8000"), just a port number or an empty string to not expose.
-healthchecks_container_http_bind_port: ""
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
+healthchecks_container_http_host_bind_port: ""
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 healthchecks_container_network: "{{ healthchecks_identifier }}"
