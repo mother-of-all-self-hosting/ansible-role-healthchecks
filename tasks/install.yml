@@ -39,20 +39,20 @@
         source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
         force_source: "{{ healthchecks_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
         force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else healthchecks_container_image_force_pull }}"
-      register: healthchecks_container_image_pull_result
+      register: healthchecks_container_image_pull_result_ansible_module
       retries: "{{ devture_playbook_help_container_retries_count }}"
       delay: "{{ devture_playbook_help_container_retries_delay }}"
-      until: healthchecks_container_image_pull_result is not failed
+      until: healthchecks_container_image_pull_result_ansible_module is not failed
 
     - name: Ensure Healthchecks container image is pulled via ansible.builtin.command
       when: devture_systemd_docker_base_container_image_pull_method == 'command'
       ansible.builtin.command:
         cmd: "{{ devture_systemd_docker_base_host_command_docker }} pull {{ healthchecks_container_image }}"
-      register: healthchecks_container_image_pull_result
+      register: healthchecks_container_image_pull_result_command
       retries: "{{ devture_playbook_help_container_retries_count }}"
       delay: "{{ devture_playbook_help_container_retries_delay }}"
-      until: healthchecks_container_image_pull_result is not failed
-      changed_when: "'Downloaded newer image' in healthchecks_container_image_pull_result.stdout"
+      until: healthchecks_container_image_pull_result_command is not failed
+      changed_when: "'Downloaded newer image' in healthchecks_container_image_pull_result_command.stdout"
 
 - name: Run if self-building of Healthchecks container image is enabled
   when: "healthchecks_container_image_self_build | bool"
@@ -115,6 +115,7 @@
       {{
         healthchecks_support_files_result.changed | default(false)
         or healthchecks_systemd_service_result.changed | default(false)
-        or healthchecks_container_image_pull_result.changed | default(false)
+        or healthchecks_container_image_pull_result_ansible_module.changed | default(false)
+        or healthchecks_container_image_pull_result_command.changed | default(false)
         or healthchecks_container_image_build_result.changed | default(false)
       }}
