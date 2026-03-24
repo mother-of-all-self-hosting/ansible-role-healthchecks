@@ -225,10 +225,10 @@ healthchecks_database_mysql_hostname: ""
 healthchecks_database_mysql_port: 3306
 healthchecks_database_mysql_username: healthchecks
 healthchecks_database_mysql_password: ""
-healthchecks_database_hostname: ""
-healthchecks_database_port: 5432
-healthchecks_database_username: healthchecks
-healthchecks_database_password: ""
+healthchecks_database_postgres_hostname: ""
+healthchecks_database_postgres_port: 5432
+healthchecks_database_postgres_username: healthchecks
+healthchecks_database_postgres_password: ""
 # Specify SSL mode for Postgres database server
 # By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
 # Valid values: see https://www.postgresql.org/docs/11/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS
