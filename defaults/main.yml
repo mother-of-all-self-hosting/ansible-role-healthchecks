@@ -229,6 +229,10 @@ healthchecks_database_hostname: ""
 healthchecks_database_port: 5432
 healthchecks_database_username: healthchecks
 healthchecks_database_password: ""
+# Specify SSL mode for Postgres database server
+# By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
+# Valid values: see https://www.postgresql.org/docs/11/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS
+healthchecks_database_postgres_sslmode: disable
 
 # See https://healthchecks.io/docs/self_hosted_configuration/#DB_NAME
 healthchecks_database_name: healthchecks
