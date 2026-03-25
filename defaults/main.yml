@@ -245,7 +245,7 @@ healthchecks_database_name: healthchecks
 healthchecks_database_sqlite_name: /data/hc.sqlite
 
 # Control if the database connection to MySQL is made via a Unix socket
-healthchecks_database_mysql_socket_enabled: true
+healthchecks_database_mysql_socket_enabled: false
 
 # Specify the path to the MySQL Unix socket path inside the Healthchecks container
 healthchecks_database_mysql_socket_path_container: /run-mysqld
@@ -254,7 +254,7 @@ healthchecks_database_mysql_socket_path_container: /run-mysqld
 healthchecks_database_mysql_socket_path_host: ""
 
 # Control if the database connection to Postgres is made via a Unix socket
-healthchecks_database_postgres_socket_enabled: true
+healthchecks_database_postgres_socket_enabled: false
 
 # Specify the path to the Postgres Unix socket path inside the Healthchecks container
 healthchecks_database_postgres_socket_path_container: /run-postgres
