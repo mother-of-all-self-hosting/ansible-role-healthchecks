@@ -1,5 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
-# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023 MASH project contributors
+# SPDX-FileCopyrightText: 2023-2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025, 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -49,19 +51,21 @@
   ansible.builtin.fail:
     msg: >-
       You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `mysql`
-  when: "healthchecks_database_type == 'mysql' and lookup('vars', item, default='') | string | length == 0"
+  when: "healthchecks_database_type == 'mysql' and item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
   with_items:
-    - healthchecks_database_mysql_hostname
-    - healthchecks_database_mysql_password
+    - { "name": "healthchecks_database_mysql_socket_path_host", when: "{{ healthchecks_database_mysql_socket_enabled }}" }
+    - { "name": "healthchecks_database_mysql_hostname", when: "{{ not healthchecks_database_mysql_socket_enabled }}" }
+    - { "name": "healthchecks_database_mysql_password", when: true }
 
 - name: Fail if required Healthchecks + Postgres integration settings not defined
   ansible.builtin.fail:
     msg: >-
       You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `postgres`
-  when: "healthchecks_database_type == 'postgres' and lookup('vars', item, default='') | string | length == 0"
+  when: "healthchecks_database_type == 'postgres' and item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
   with_items:
-    - healthchecks_database_postgres_hostname
-    - healthchecks_database_postgres_password
+    - { "name": "healthchecks_database_postgres_socket_path_host", when: "{{ healthchecks_database_postgres_socket_enabled }}" }
+    - { "name": "healthchecks_database_postgres_hostname", when: "{{ not healthchecks_database_postgres_socket_enabled }}" }
+    - { "name": "healthchecks_database_postgres_password", when: true }
 
 - name: Fail if SMTP settings are missing (and SMTP is enabled by setting host)
   ansible.builtin.fail:
