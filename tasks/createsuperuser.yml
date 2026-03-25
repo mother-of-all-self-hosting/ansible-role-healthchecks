@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-# The command for running `createsuperuser`: `ansible-playbook -i inventory/hosts setup.yml --tags=createsuperuser-healthchecks -e email=EMAIL_ADDRESS_HERE -e password=PASSWORD_HERE`
+# The command for running `createsuperuser`: `ansible-playbook -i inventory/hosts setup.yml --tags=create-admin-healthchecks -e email=EMAIL_ADDRESS_HERE -e password=PASSWORD_HERE`
 
 - name: Fail if playbook called incorrectly
   ansible.builtin.fail:

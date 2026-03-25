@@ -20,6 +20,8 @@
   when: healthchecks_enabled | bool
   tags:
     - createsuperuser-healthchecks
+    - create-admin-healthchecks
+    - create-superuser-healthchecks
   block:
     - name: Run Healthchecks `createsuperuser` command
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/createsuperuser.yml"
