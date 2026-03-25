@@ -216,6 +216,12 @@ healthchecks_container_cleanup_command: |
   echo "Failed to remove stale container {{ healthchecks_identifier }} after {{ healthchecks_container_cleanup_timeout_seconds }} attempts" >&2;
   exit 1
 
+########################################################################
+#                                                                      #
+# database                                                             #
+#                                                                      #
+########################################################################
+
 # Specify a database driver to use
 # Valid values: mysql, postgres, sqlite
 healthchecks_database_type: postgres
@@ -237,6 +243,34 @@ healthchecks_database_postgres_sslmode: disable
 # See https://healthchecks.io/docs/self_hosted_configuration/#DB_NAME
 healthchecks_database_name: healthchecks
 healthchecks_database_sqlite_name: /data/hc.sqlite
+
+# Control if the database connection to MySQL is made via a Unix socket
+healthchecks_database_mysql_socket_enabled: true
+
+# Specify the path to the MySQL Unix socket path inside the Healthchecks container
+healthchecks_database_mysql_socket_path_container: /run-mysqld
+
+# Specify the path to the MySQL Unix socket path on the host (bind-mount source)
+healthchecks_database_mysql_socket_path_host: ""
+
+# Control if the database connection to Postgres is made via a Unix socket
+healthchecks_database_postgres_socket_enabled: true
+
+# Specify the path to the Postgres Unix socket path inside the Healthchecks container
+healthchecks_database_postgres_socket_path_container: /run-postgres
+
+# Specify the path to the Postgres Unix socket path on the host (bind-mount source)
+healthchecks_database_postgres_socket_path_host: ""
+
+# Specify database host address and port or absolute path for Unix socket
+healthchecks_database_environment_variables_database_host_mysql: "{{ healthchecks_database_mysql_socket_path_container + '/mysqld.sock' if healthchecks_database_mysql_socket_enabled else healthchecks_database_mysql_hostname }}"
+healthchecks_database_environment_variables_database_host_postgres: "{{ healthchecks_database_postgres_socket_path_container if healthchecks_database_postgres_socket_enabled else healthchecks_database_postgres_hostname }}"
+
+########################################################################
+#                                                                      #
+# /database                                                            #
+#                                                                      #
+########################################################################
 
 # Specify the timezone
 healthchecks_environment_variables_tz: UTC
