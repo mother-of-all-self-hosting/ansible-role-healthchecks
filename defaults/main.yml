@@ -224,7 +224,7 @@ healthchecks_container_cleanup_command: |
 
 # Specify a database driver to use
 # Valid values: mysql, postgres, sqlite
-healthchecks_database_type: postgres
+healthchecks_database_type: ""
 
 # Specify database configuration
 healthchecks_database_mysql_hostname: ""
