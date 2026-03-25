@@ -47,61 +47,63 @@
       healthchecks_database_type must be 'mysql', 'postgres' or 'sqlite'
   when: "healthchecks_database_type not in ['mysql', 'postgres', 'sqlite']"
 
-- name: Fail if required Healthchecks + MySQL integration settings not defined
-  ansible.builtin.fail:
-    msg: >-
-      You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `mysql`
-  when: "healthchecks_database_type == 'mysql' and lookup('vars', item, default='') | string | length == 0"
-  with_items:
-    - healthchecks_database_mysql_password
+- name: Run if Healthchecks + MySQL integration is enabled
+  when: healthchecks_database_type == 'mysql'
+  block:
+    - name: Fail if required Healthchecks + MySQL integration settings not defined
+      ansible.builtin.fail:
+        msg: >-
+          You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `mysql`
+      when: "lookup('vars', item, default='') | string | length == 0"
+      with_items:
+        - healthchecks_database_mysql_password
 
-- name: Fail if MySQL socket host path is missing when Unix socket is enabled
-  ansible.builtin.fail:
-    msg: >-
-      You need to define `healthchecks_database_mysql_socket_path_host` when `healthchecks_database_type` is `mysql`
-      and `healthchecks_database_mysql_socket_enabled` is `true`.
-  when: >-
-    healthchecks_database_type == 'mysql' and
-    healthchecks_database_mysql_socket_enabled and
-    healthchecks_database_mysql_socket_path_host | string | length == 0
+    - name: Fail if MySQL socket host path for Healthchecks is missing when Unix socket is enabled
+      ansible.builtin.fail:
+        msg: >-
+          You need to define `healthchecks_database_mysql_socket_path_host` when `healthchecks_database_type` is `mysql`
+          and `healthchecks_database_mysql_socket_enabled` is `true`.
+      when: >-
+        healthchecks_database_mysql_socket_enabled and
+        healthchecks_database_mysql_socket_path_host | string | length == 0
 
-- name: Fail if MySQL hostname is missing when Unix socket is disabled
-  ansible.builtin.fail:
-    msg: >-
-      You need to define `healthchecks_database_mysql_hostname` when `healthchecks_database_type` is `mysql`
-      and `healthchecks_database_mysql_socket_enabled` is `false`.
-  when: >-
-    healthchecks_database_type == 'mysql' and
-    not healthchecks_database_mysql_socket_enabled and
-    healthchecks_database_mysql_hostname | string | length == 0
+    - name: Fail if MySQL hostname for Healthchecks is missing when Unix socket is disabled
+      ansible.builtin.fail:
+        msg: >-
+          You need to define `healthchecks_database_mysql_hostname` when `healthchecks_database_type` is `mysql`
+          and `healthchecks_database_mysql_socket_enabled` is `false`.
+      when: >-
+        not healthchecks_database_mysql_socket_enabled and
+        healthchecks_database_mysql_hostname | string | length == 0
 
-- name: Fail if required Healthchecks + Postgres integration settings not defined
-  ansible.builtin.fail:
-    msg: >-
-      You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `postgres`
-  when: "healthchecks_database_type == 'postgres' and lookup('vars', item, default='') | string | length == 0"
-  with_items:
-    - healthchecks_database_postgres_password
+- name: Run if Healthchecks + Postgres integration is enabled
+  when: healthchecks_database_type == 'postgres'
+  block:
+    - name: Fail if required Healthchecks + Postgres integration settings not defined
+      ansible.builtin.fail:
+        msg: >-
+          You need to define a required configuration setting (`{{ item }}`) when `healthchecks_database_type` is `postgres`
+      when: "lookup('vars', item, default='') | string | length == 0"
+      with_items:
+        - healthchecks_database_postgres_password
 
-- name: Fail if Postgres socket host path is missing when Unix socket is enabled
-  ansible.builtin.fail:
-    msg: >-
-      You need to define `healthchecks_database_postgres_socket_path_host` when `healthchecks_database_type` is `postgres`
-      and `healthchecks_database_postgres_socket_enabled` is `true`.
-  when: >-
-    healthchecks_database_type == 'postgres' and
-    healthchecks_database_postgres_socket_enabled and
-    healthchecks_database_postgres_socket_path_host | string | length == 0
+    - name: Fail if Postgres socket host path for Healthchecks is missing when Unix socket is enabled
+      ansible.builtin.fail:
+        msg: >-
+          You need to define `healthchecks_database_postgres_socket_path_host` when `healthchecks_database_type` is `postgres`
+          and `healthchecks_database_postgres_socket_enabled` is `true`.
+      when: >-
+        healthchecks_database_postgres_socket_enabled and
+        healthchecks_database_postgres_socket_path_host | string | length == 0
 
-- name: Fail if Postgres hostname is missing when Unix socket is disabled
-  ansible.builtin.fail:
-    msg: >-
-      You need to define `healthchecks_database_postgres_hostname` when `healthchecks_database_type` is `postgres`
-      and `healthchecks_database_postgres_socket_enabled` is `false`.
-  when: >-
-    healthchecks_database_type == 'postgres' and
-    not healthchecks_database_postgres_socket_enabled and
-    healthchecks_database_postgres_hostname | string | length == 0
+    - name: Fail if Postgres hostname for Healthchecks is missing when Unix socket is disabled
+      ansible.builtin.fail:
+        msg: >-
+          You need to define `healthchecks_database_postgres_hostname` when `healthchecks_database_type` is `postgres`
+          and `healthchecks_database_postgres_socket_enabled` is `false`.
+      when: >-
+        not healthchecks_database_postgres_socket_enabled and
+        healthchecks_database_postgres_hostname | string | length == 0
 
 - name: Fail if SMTP settings are missing (and SMTP is enabled by setting host)
   ansible.builtin.fail:
