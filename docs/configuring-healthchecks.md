@@ -18,96 +18,96 @@ SPDX-FileCopyrightText: 2024-2026 Suguru Hirahara
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Setting up Vikunja
+# Setting up Healthchecks
 
-This is an [Ansible](https://www.ansible.com/) role which installs [Vikunja](https://vikunja.io/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
+This is an [Ansible](https://www.ansible.com/) role which installs [Healthchecks](https://healthchecks.io/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
-Vikunja is a self-hosted to-do application.
+Healthchecks is a self-hosted to-do application.
 
-See the project's [documentation](https://vikunja.io/docs/) to learn what Vikunja does and why it might be useful to you.
+See the project's [documentation](https://healthchecks.io/docs/) to learn what Healthchecks does and why it might be useful to you.
 
 ## Prerequisites
 
-To run a Vikunja instance it is necessary to prepare a database. You can use a [MySQL](https://www.mysql.com/) compatible database server, [Postgres](https://www.postgresql.org/), or [SQLite](https://www.sqlite.org/). By default it is configured to use SQLite.
+To run a Healthchecks instance it is necessary to prepare a database. You can use a [MySQL](https://www.mysql.com/) compatible database server, [Postgres](https://www.postgresql.org/), or [SQLite](https://www.sqlite.org/). By default it is configured to use SQLite.
 
 If you are looking for Ansible roles for a MySQL compatible server or Postgres, you can check out [ansible-role-mariadb](https://github.com/mother-of-all-self-hosting/ansible-role-mariadb) and [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres), both of which are maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
 
 ## Adjusting the playbook configuration
 
-To enable Vikunja with this role, add the following configuration to your `vars.yml` file.
+To enable Healthchecks with this role, add the following configuration to your `vars.yml` file.
 
 **Note**: the path should be something like `inventory/host_vars/mash.example.com/vars.yml` if you use the [MASH Ansible playbook](https://github.com/mother-of-all-self-hosting/mash-playbook).
 
 ```yaml
 ########################################################################
 #                                                                      #
-# vikunja                                                              #
+# healthchecks                                                         #
 #                                                                      #
 ########################################################################
 
-vikunja_enabled: true
+healthchecks_enabled: true
 
 ########################################################################
 #                                                                      #
-# /vikunja                                                             #
+# /healthchecks                                                        #
 #                                                                      #
 ########################################################################
 ```
 
 ### Set the hostname
 
-To enable Vikunja you need to set the hostname as well. To do so, add the following configuration to your `vars.yml` file. Make sure to replace `example.com` with your own value.
+To enable Healthchecks you need to set the hostname as well. To do so, add the following configuration to your `vars.yml` file. Make sure to replace `example.com` with your own value.
 
 ```yaml
-vikunja_hostname: "example.com"
+healthchecks_hostname: "example.com"
 ```
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting Vikunja under a subpath (by configuring the `vikunja_path_prefix` variable) does not seem to be possible due to Vikunja's technical limitations.
+**Note**: hosting Healthchecks under a subpath (by configuring the `healthchecks_path_prefix` variable) does not seem to be possible due to Healthchecks's technical limitations.
 
 ### Set a random string for JWT tokens verification
 
 You also need to set a random string used for verifying issued JWT tokens. To do so, add the following configuration to your `vars.yml` file. The value can be generated with `pwgen -s 64 1` or in another way.
 
 ```yaml
-vikunja_environment_variables_service_jwtsecret: YOUR_SECRET_KEY_HERE
+healthchecks_environment_variables_service_jwtsecret: YOUR_SECRET_KEY_HERE
 ```
 
 ### Specify database (optional)
 
-You can specify a database used by Vikunja. By default it is configured to use SQLite, and the SQLite database is stored in the directory specified with `vikunja_database_path`.
+You can specify a database used by Healthchecks. By default it is configured to use SQLite, and the SQLite database is stored in the directory specified with `healthchecks_database_path`.
 
 To use Postgres, add the following configuration to your `vars.yml` file:
 
 ```yaml
-vikunja_database_type: postgres
+healthchecks_database_type: postgres
 ```
 
 Set `mysql` to use a MySQL compatible database.
 
-For other settings, check variables such as `vikunja_database_postgres_*` and `vikunja_database_mysql_*` on [`defaults/main.yml`](../defaults/main.yml).
+For other settings, check variables such as `healthchecks_database_postgres_*` and `healthchecks_database_mysql_*` on [`defaults/main.yml`](../defaults/main.yml).
 
 ### Configuring a Redis server (optional)
 
 Also, you can optionally enable a [Redis](https://redis.io/) server for managing cache.
 
-To enable Redis for Vikunja, add the following configuration to your `vars.yml` file, so that the Vikunja instance will connect to the server. Note that the role is by default configured to establish connection with the Redis server via the Unix socket.
+To enable Redis for Healthchecks, add the following configuration to your `vars.yml` file, so that the Healthchecks instance will connect to the server. Note that the role is by default configured to establish connection with the Redis server via the Unix socket.
 
 ```yaml
 # Specify the path to the Redis Unix socket path on the host (bind-mount source)
-vikunja_redis_socket_path_host: ""
+healthchecks_redis_socket_path_host: ""
 
-vikunja_redis_database: 0
+healthchecks_redis_database: 0
 ```
 
 If TCP connection is preferred, connection via the Unix socket can be disabled by adding the following configuration to your `vars.yml` file:
 
 ```yaml
 # Disable the connection to Redis via a Unix socket
-vikunja_redis_socket_enabled: false
+healthchecks_redis_socket_enabled: false
 
-vikunja_redis_hostname: YOUR_REDIS_SERVER_HOSTNAME_HERE
+healthchecks_redis_hostname: YOUR_REDIS_SERVER_HOSTNAME_HERE
 ```
 
 Make sure to replace `YOUR_REDIS_SERVER_HOSTNAME_HERE` with your own value.
@@ -122,32 +122,32 @@ To configure it, add the following configuration to your `vars.yml` file as belo
 
 ```yaml
 # Set to `true` to enable mailer
-vikunja_mailer_enabled: true
+healthchecks_mailer_enabled: true
 
 # Set the hostname of the SMTP server
-vikunja_environment_variables_smtp_host: ""
+healthchecks_environment_variables_smtp_host: ""
 
 # Set the port number of the SMTP server
-vikunja_environment_variables_smtp_port: 587
+healthchecks_environment_variables_smtp_port: 587
 
 # Set the username for the SMTP server
-vikunja_environment_variables_smtp_user: ""
+healthchecks_environment_variables_smtp_user: ""
 
 # Set the password for the SMTP server
-vikunja_environment_variables_smtp_password: ""
+healthchecks_environment_variables_smtp_password: ""
 
 # Set the email address that emails will be sent from
-vikunja_environment_variables_smtp_from: ""
+healthchecks_environment_variables_smtp_from: ""
 
 # Specify the SMTP Auth Type
 # Valid values: plain, login, cram-md5
-vikunja_environment_variables_smtp_authtype: plain
+healthchecks_environment_variables_smtp_authtype: plain
 
 # Set to `true` to skip verification of the TLS certificate on the server
-vikunja_environment_variables_skiptlsverify: false
+healthchecks_environment_variables_skiptlsverify: false
 
-# Set to `true` to make Vikunja use SSL instead of STARTTLS.
-vikunja_environment_variables_smtp_forcessl: false
+# Set to `true` to make Healthchecks use SSL instead of STARTTLS.
+healthchecks_environment_variables_smtp_forcessl: false
 ```
 
 >[!WARNING]
@@ -158,17 +158,17 @@ vikunja_environment_variables_smtp_forcessl: false
 By default the role is configured to disable user registration. You can enable it by adding the following configuration to your `vars.yml` file.
 
 ```yaml
-vikunja_environment_variables_service_enableregistration: true
+healthchecks_environment_variables_service_enableregistration: true
 ```
 
-Alternatively, you can also create users by running the command to run [`user create`](https://vikunja.io/docs/cli/#user-create) inside the container. See below in [this section](#creating-users) for the usage.
+Alternatively, you can also create users by running the command to run [`user create`](https://healthchecks.io/docs/cli/#user-create) inside the container. See below in [this section](#creating-users) for the usage.
 
 ### Configuring rate limit
 
 You can enable the rate limit by adding the following configuration to your `vars.yml` file:
 
 ```yaml
-vikunja_environment_variables_ratelimit_enabled: true
+healthchecks_environment_variables_ratelimit_enabled: true
 ```
 
 ### Extending the configuration
@@ -177,9 +177,9 @@ There are some additional things you may wish to configure about the service.
 
 Take a look at:
 
-- [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `vikunja_environment_variables_additional_variables` variable
+- [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `healthchecks_environment_variables_additional_variables` variable
 
-See [the official documentation](https://vikunja.io/docs/config-options/) for a complete list of Vikunja's config options that you could put in `vikunja_environment_variables_additional_variables`.
+See [the official documentation](https://healthchecks.io/docs/config-options/) for a complete list of Healthchecks's config options that you could put in `healthchecks_environment_variables_additional_variables`.
 
 ## Installing
 
@@ -193,60 +193,60 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 ## Usage
 
-After running the command for installation, Vikunja becomes available at the specified hostname like `https://example.com`.
+After running the command for installation, Healthchecks becomes available at the specified hostname like `https://example.com`.
 
-To get started, create a user first and open the URL with a web browser to log in to the instance. You can create one on the web UI if `vikunja_environment_variables_service_enableregistration` is set to `true`. Alternatively, you can run the command below to create users.
+To get started, create a user first and open the URL with a web browser to log in to the instance. You can create one on the web UI if `healthchecks_environment_variables_service_enableregistration` is set to `true`. Alternatively, you can run the command below to create users.
 
 ### Creating users
 
-You can create users by running the command below to run [`user create`](https://vikunja.io/docs/cli/#user-create) inside the container.
+You can create users by running the command below to run [`user create`](https://healthchecks.io/docs/cli/#user-create) inside the container.
 
 ```sh
-ansible-playbook -i inventory/hosts setup.yml --tags=create-user-vikunja -e username=USERNAME_HERE -e password=PASSWORD_HERE -e email=EMAIL_ADDRESS_HERE
+ansible-playbook -i inventory/hosts setup.yml --tags=create-user-healthchecks -e username=USERNAME_HERE -e password=PASSWORD_HERE -e email=EMAIL_ADDRESS_HERE
 ```
 
 ### Running the CLI command
 
-It is possible to run commands on the command line inside the container by running the `cli-vikunja` tag, setting the `command` extra variable.
+It is possible to run commands on the command line inside the container by running the `cli-healthchecks` tag, setting the `command` extra variable.
 
 For example, you can run the command `version` by running the playbook with the tag as below:
 
 ```sh
-ansible-playbook -i inventory/hosts setup.yml --tags=cli-vikunja -e command='version'
+ansible-playbook -i inventory/hosts setup.yml --tags=cli-healthchecks -e command='version'
 ```
 
-See [this page](https://vikunja.io/docs/cli/) for the list of available commands.
+See [this page](https://healthchecks.io/docs/cli/) for the list of available commands.
 
 ### Typesense integration for enhanced search capabilities
 
-Vikunja supports [Typesense](https://typesense.org/), which allows fast fulltext search with fuzzy matching support. To enable it, the following configuration to your `vars.yml` file:
+Healthchecks supports [Typesense](https://typesense.org/), which allows fast fulltext search with fuzzy matching support. To enable it, the following configuration to your `vars.yml` file:
 
 ```yaml
-vikunja_environment_variables_typesense_enabled: true
-vikunja_environment_variables_typesense_url: TYPESENSE_INSTANCE_URL_HERE
-vikunja_environment_variables_typesense_apikey: TYPESENSE_ADMIN_API_KEY_HERE
+healthchecks_environment_variables_typesense_enabled: true
+healthchecks_environment_variables_typesense_url: TYPESENSE_INSTANCE_URL_HERE
+healthchecks_environment_variables_typesense_apikey: TYPESENSE_ADMIN_API_KEY_HERE
 ```
 
 Make sure to replace `TYPESENSE_INSTANCE_URL_HERE` and `TYPESENSE_ADMIN_API_KEY_HERE` with your own values.
 
-After adding the configuration and restarting the service, it is necessary to run `vikunja index` to have Typesense index tasks in the Vikunja instance. You can invoke it by running the playbook below:
+After adding the configuration and restarting the service, it is necessary to run `healthchecks index` to have Typesense index tasks in the Healthchecks instance. You can invoke it by running the playbook below:
 
 ```sh
-ansible-playbook -i inventory/hosts setup.yml --tags=cli-vikunja -e command='index'
+ansible-playbook -i inventory/hosts setup.yml --tags=cli-healthchecks -e command='index'
 ```
 
-Refer to [this page](https://vikunja.io/docs/typesense/) as well.
+Refer to [this page](https://healthchecks.io/docs/typesense/) as well.
 
 ## Troubleshooting
 
 ### Check the service's logs
 
-You can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running `journalctl -fu vikunja` (or how you/your playbook named the service, e.g. `mash-vikunja`).
+You can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running `journalctl -fu healthchecks` (or how you/your playbook named the service, e.g. `mash-healthchecks`).
 
 #### Increase logging verbosity
 
 If you want to increase the verbosity, add the following configuration to your `vars.yml` file:
 
 ```yaml
-vikunja_environment_variables_log_level: DEBUG
+healthchecks_environment_variables_log_level: DEBUG
 ```
