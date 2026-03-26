@@ -38,7 +38,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% if healthchecks_database_mysql_socket_enabled and healthchecks_database_mysql_socket_path_host != '' %}
       --mount type=bind,src={{ healthchecks_database_mysql_socket_path_host }},dst={{ healthchecks_database_mysql_socket_path_container }} \
       {% endif %}
-      {% if healthchecks_database_postgres_socket_enabled and healthchecks_database_postgres_socket_path_host !='' %}
+      {% if healthchecks_database_postgres_socket_enabled and healthchecks_database_postgres_socket_path_host != '' %}
       --mount type=bind,src={{ healthchecks_database_postgres_socket_path_host }},dst={{ healthchecks_database_postgres_socket_path_container }} \
       {% endif %}
       {% for volume in healthchecks_container_additional_volumes %}
