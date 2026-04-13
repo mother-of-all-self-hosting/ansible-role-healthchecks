@@ -262,7 +262,7 @@ healthchecks_database_postgres_socket_path_container: /run-postgres
 # Specify the path to the Postgres Unix socket path on the host (bind-mount source)
 healthchecks_database_postgres_socket_path_host: ""
 
-# Specify database host address and port or absolute path for Unix socket
+# Specify database host address or absolute path for Unix socket
 healthchecks_database_environment_variables_database_host_mysql: "{{ healthchecks_database_mysql_socket_path_container + '/mysqld.sock' if healthchecks_database_mysql_socket_enabled else healthchecks_database_mysql_hostname }}"
 healthchecks_database_environment_variables_database_host_postgres: "{{ healthchecks_database_postgres_socket_path_container if healthchecks_database_postgres_socket_enabled else healthchecks_database_postgres_hostname }}"
 
