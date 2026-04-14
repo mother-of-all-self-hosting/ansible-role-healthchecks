@@ -6,7 +6,7 @@
 ---
 # The command for running `createsuperuser`: `ansible-playbook -i inventory/hosts setup.yml --tags=create-admin-healthchecks -e email=EMAIL_ADDRESS_HERE -e password=PASSWORD_HERE`
 
-- name: Fail if playbook called incorrectly
+- name: Fail if playbook called incorrectly for Healthchecks
   ansible.builtin.fail:
     msg: "The `email` and `password` variables need to be provided via --extra-vars"
   when: "email is not defined or password is not defined"
