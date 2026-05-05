@@ -25,6 +25,7 @@
     - { "old": "healthchecks_database_username", "new": "healthchecks_database_postgres_username" }
     - { "old": "healthchecks_database_password", "new": "healthchecks_database_postgres_password" }
     - { "old": "healthchecks_http_header_content_permission_policy", "new": "healthchecks_http_header_permissions_policy" }
+    - { "old": "healthchecks_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
 
 - name: Fail if required Healthchecks settings not defined
   ansible.builtin.fail:

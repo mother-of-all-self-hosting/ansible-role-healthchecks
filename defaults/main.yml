@@ -36,7 +36,6 @@ healthchecks_container_image_tag: "{{ healthchecks_version }}"
 healthchecks_container_image_registry_prefix: "{{ healthchecks_container_image_registry_prefix_upstream }}"
 healthchecks_container_image_registry_prefix_upstream: "{{ healthchecks_container_image_registry_prefix_upstream_default }}"
 healthchecks_container_image_registry_prefix_upstream_default: docker.io/
-healthchecks_container_image_force_pull: "{{ healthchecks_container_image.endswith(':latest') }}"
 
 healthchecks_container_image_self_build: false
 healthchecks_container_image_self_build_name: "healthchecks/healthchecks:{{ healthchecks_container_image_self_build_repo_version }}"
