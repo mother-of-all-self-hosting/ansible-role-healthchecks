@@ -49,6 +49,10 @@ Currently these testing scenarios are available:
 
 Tests a standard Healthchecks installation.
 
+### `default-selfbuild`
+
+Tests a standard Healthchecks installation with self-building the container image.
+
 ### `mariadb`
 
 Tests a standard Healthchecks installation with the MariaDB database.
