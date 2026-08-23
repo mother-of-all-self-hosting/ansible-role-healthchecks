@@ -38,8 +38,8 @@ provisioner:
         healthchecks_hostname: localhost
         healthchecks_container_labels_traefik_enabled: false
         healthchecks_container_http_host_bind_port: 8000
-        healthchecks_database_type: sqlite
         healthchecks_environment_variable_secret_key: lmxSDWFiwAz2apPWHuD0bd6SWumPBg8XEeQ2hxXoLFCwhjWNxysAom9Lahs2a5q7
+        healthchecks_database_type: sqlite
   env:
     # Workaround for https://github.com/ansible/molecule/issues/4391
     ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..:/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:~/.ansible/roles
