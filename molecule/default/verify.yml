@@ -375,9 +375,9 @@
       ansible.builtin.debug:
         msg:
           - "Healthchecks systemd: {{ healthchecks_service.status.ActiveState }}"
-          - "Status endpoint: {{ healthchecks_status.status }} {{ healthchecks_status.content | trim }}"
-          - "Version: {{ healthchecks_defaults.healthchecks_version }}"
-          - "Login page: {{ healthchecks_login_page.status }}"
-          - "Check after ping: {{ healthchecks_verify_check.status }} ({{ healthchecks_verify_check.n_pings }} ping)"
-          - "Database connection: {{ healthchecks_db_connection.stdout_lines | select('match', '^DB_') | join(', ') }}"
-          - "Database container: {{ healthchecks_db_check_row.stdout | default('(not applicable to sqlite)', true) | trim }}"
+          - "Healthchecks status endpoint: {{ healthchecks_status.status }} {{ healthchecks_status.content | trim }}"
+          - "Healthchecks version: {{ healthchecks_defaults.healthchecks_version }}"
+          - "Healthchecks login page: {{ healthchecks_login_page.status }}"
+          - "Healthchecks check after ping: {{ healthchecks_verify_check.status }} ({{ healthchecks_verify_check.n_pings }} ping)"
+          - "Healthchecks database connection: {{ healthchecks_db_connection.stdout_lines | select('match', '^DB_') | join(', ') }}"
+          - "Healthchecks database container: {{ healthchecks_db_check_row.stdout | default('(not applicable to sqlite)', true) | trim }}"
