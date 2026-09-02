@@ -130,9 +130,6 @@ jobs:
 
     strategy:
       matrix:
-        # The build happens inside a container against the Docker daemon, which
-        # does not care which distribution the host runs, so building a second
-        # time on another one would test nothing the first run has not.
         distro:
           - ubuntu2604
       fail-fast: false
