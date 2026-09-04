@@ -311,7 +311,7 @@
       expected an up check with one ping
     success_msg: "The api_check row for '{{ healthchecks_verify_check_name }}' records one ping and an up status"
 
-- name: Show Healthchecks verification summary
+- name: Show the Healthchecks verification summary
   vars:
     healthchecks_verify_check: >-
       {{
