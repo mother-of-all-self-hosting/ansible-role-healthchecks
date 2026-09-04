@@ -81,20 +81,15 @@
     fail_msg: "The Healthchecks login page did not render a sign-in form for this site"
     success_msg: "The Healthchecks login page renders a sign-in form for '{{ healthchecks_defaults.healthchecks_environment_variable_site_name }}'"
 
-# Tying the running Healthchecks to the version pinned in defaults/main.yml
-# is what makes this scenario a real test of the version Renovate bumps: a
-# bump to an image that cannot boot or migrate cannot pass here. The
-# version is read out of the running application (which derives it from the
+# The version is read out of the running application (which derives it from the
 # CHANGELOG.md shipped inside the image) rather than from an image label,
 # so it covers the self-build scenario too. Name and version are separated
 # by a newline and indentation in the footer markup, hence the regex.
 - name: Assert the running Healthchecks is the version this role installs
   ansible.builtin.assert:
     that: healthchecks_login_page.content is search('Healthchecks\s+' ~ (healthchecks_defaults.healthchecks_version | regex_escape) ~ '\s')
-    fail_msg: >-
-      The Healthchecks footer does not report {{ healthchecks_defaults.healthchecks_version }}:
-      {{ healthchecks_login_page.content | regex_findall('Healthchecks\s+v[^\s<]*') | join(', ') | default('no version at all', true) }}
-    success_msg: "The running Healthchecks reports {{ healthchecks_defaults.healthchecks_version }}"
+    fail_msg: "Healthchecks reports {{ healthchecks_login_page.content | regex_findall('Healthchecks\\s+v[^\\s<]*') | join(', ') | default('none') }}, expected {{ healthchecks_defaults.healthchecks_version }}"
+    success_msg: "Healthchecks reports {{ healthchecks_login_page.content | regex_findall('Healthchecks\\s+v[^\\s<]*') | join(', ') }}"
 
 # `createsuperuser` is the command this role documents for provisioning the
 # first account, run here exactly as `tasks/createsuperuser.yml` runs it.
