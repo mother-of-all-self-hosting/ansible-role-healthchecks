@@ -56,6 +56,10 @@
       SELECT count(*) FROM information_schema.tables
       WHERE table_schema = {{ "DATABASE()" if healthchecks_database_type == 'mysql' else "'public'" }}
 
+    healthchecks_verify_units:
+      - healthchecks.service
+      - postgres.service
+
   tasks:
     - name: Verify that Healthchecks works
       block:

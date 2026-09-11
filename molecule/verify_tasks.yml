@@ -13,13 +13,14 @@
     file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
     name: healthchecks_defaults
 
-- name: Wait for the Healthchecks systemd service to become active (up to 180s)
+- name: Wait for the Healthchecks systemd services to become active (up to 180s each)
   ansible.builtin.systemd_service:
-    name: healthchecks.service
-  register: healthchecks_service
-  until: healthchecks_service.status.ActiveState == 'active'
+    name: "{{ item }}"
+  register: healthchecks_services
+  until: healthchecks_services.status.ActiveState == 'active'
   retries: 36
   delay: 5
+  loop: "{{ healthchecks_verify_units }}"
   # So that giving up is reported by the assertion below rather than as a
   # wall of systemd unit properties.
   failed_when: false
@@ -27,17 +28,20 @@
 # `Restart=always` in the systemd unit means that even a container which crashes
 # and gets restarted reads as active here, so this is a precondition rather than
 # a result.
-- name: Assert the Healthchecks systemd service is active
+- name: Assert the Healthchecks systemd services are active
   ansible.builtin.assert:
-    that: healthchecks_service.status.ActiveState == 'active'
-    fail_msg: "healthchecks.service is not active ({{ healthchecks_service.status.ActiveState }})"
-    success_msg: "healthchecks.service is active"
+    that: healthchecks_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
+    fail_msg: >-
+      Not every service is active:
+      {{ dict(healthchecks_verify_units | zip(healthchecks_services.results | map(attribute='status.ActiveState'))) }}
+    success_msg: "Every systemd service is active"
 
-- name: Retrieve the Healthchecks systemd service log for debugging
+- name: Retrieve the Healthchecks systemd services log for debugging
   when: healthchecks_debug_service_enabled | bool
   ansible.builtin.command:
-    cmd: journalctl --no-pager --output=cat --unit=healthchecks.service
+    cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
   changed_when: false
+  loop: "{{ healthchecks_verify_units }}"
 
 # An active unit says nothing about readiness here: uwsgi runs
 # `manage.py migrate` from its `hook-pre-app` while the unit is already
@@ -321,7 +325,7 @@
       }}
   ansible.builtin.debug:
     msg:
-      - "Healthchecks systemd: {{ healthchecks_service.status.ActiveState }}"
+      - "Healthchecks systemd: {% for unit, state in healthchecks_verify_units | zip(healthchecks_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
       - "Healthchecks status endpoint: {{ healthchecks_status.status }} {{ healthchecks_status.content | trim }}"
       - "Healthchecks version: {{ healthchecks_defaults.healthchecks_version }}"
       - "Healthchecks login page: {{ healthchecks_login_page.status }}"
