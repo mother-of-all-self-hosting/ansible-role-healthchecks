@@ -128,6 +128,12 @@ healthchecks_container_extra_arguments: "{{ healthchecks_container_extra_argumen
 healthchecks_container_extra_arguments_auto: []
 healthchecks_container_extra_arguments_custom: []
 
+# A list of extra arguments to pass to the process inside the container
+# Example: ['--SOME_ARGUMENT']
+healthchecks_process_extra_arguments: "{{ healthchecks_process_extra_arguments_auto + healthchecks_process_extra_arguments_custom }}"
+healthchecks_process_extra_arguments_auto: []
+healthchecks_process_extra_arguments_custom: []
+
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 #
