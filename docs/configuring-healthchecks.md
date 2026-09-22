@@ -159,7 +159,7 @@ Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `healthchecks_environment_variables_additional_variables` variable
 
-See [the official documentation](https://healthchecks.io/docs/self_hosted_configuration/) for a complete list of Healthchecks's config options that you can put in `healthchecks_environment_variables_additional_variables`.
+Refer to [the official documentation](https://healthchecks.io/docs/self_hosted_configuration/) for a complete list of Healthchecks's config options that you can put in `healthchecks_environment_variables_additional_variables`.
 
 ## Installing
 
