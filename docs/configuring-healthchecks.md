@@ -112,19 +112,19 @@ healthchecks_database_postgres_socket_enabled: false
 You can configure a SMTP mailer to enable email functions such as notifications. To configure it, add the following configuration to your `vars.yml` file as below (adapt to your needs):
 
 ```yaml
-# Set the hostname of the SMTP server
+# Specify the hostname of the SMTP server
 healthchecks_environment_variable_email_host: ""
 
-# Set the port number of the SMTP server
+# Specify the port number of the SMTP server
 healthchecks_environment_variable_email_port: 587
 
-# Set the username for the SMTP server
+# Specify the username for the SMTP server
 healthchecks_environment_variable_email_host_user: ""
 
-# Set the password for the SMTP server
+# Specify the password for the SMTP server
 healthchecks_environment_variable_email_host_password: ""
 
-# Set the email address that emails will be sent from
+# Specify the email address that emails will be sent from
 healthchecks_environment_variable_default_from_email: ""
 
 # Set to `true` to make Healthchecks use TLS encryption
