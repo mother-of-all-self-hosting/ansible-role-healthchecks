@@ -325,6 +325,100 @@ healthchecks_environment_variable_ping_endpoint: "{{ healthchecks_scheme }}://{{
 # Controls the SECRET_KEY environment variable
 healthchecks_environment_variable_secret_key: ""
 
+# Controls the DB_CONN_MAX_AGE environment variable (MySQL/Postgres only)
+healthchecks_environment_variable_db_conn_max_age: 0
+
+# Controls the DB_TARGET_SESSION_ATTRS environment variable (Postgres only)
+healthchecks_environment_variable_db_target_session_attrs: read-write
+
+# Controls the REGISTRATION_OPEN environment variable
+healthchecks_environment_variable_registration_open: false
+
+# Controls the REMOTE_USER_HEADER environment variable
+healthchecks_environment_variable_remote_user_header: ""
+
+# Controls the RP_ID environment variable (WebAuthn relying party ID)
+healthchecks_environment_variable_rp_id: "{{ healthchecks_hostname }}"
+
+# Controls the MASTER_BADGE_LABEL environment variable
+healthchecks_environment_variable_master_badge_label: Mychecks
+
+# Controls the USE_PAYMENTS environment variable
+healthchecks_environment_variable_use_payments: false
+
+# Controls the INTEGRATIONS_ALLOW_PRIVATE_IPS environment variable
+healthchecks_environment_variable_integrations_allow_private_ips: false
+
+# Controls the PROMETHEUS_ENABLED environment variable.
+# When enabled, project owners can generate a read-only API key and then
+# Prometheus can scrape metrics from `{SITE_ROOT}/projects/{project-uuid}/metrics/{api-key}`.
+# See: https://healthchecks.io/docs/configuring_prometheus/
+healthchecks_environment_variable_prometheus_enabled: false
+
+# S3 configuration (for storing large ping bodies)
+healthchecks_environment_variable_s3_access_key: ""
+healthchecks_environment_variable_s3_secret_key: ""
+healthchecks_environment_variable_s3_bucket: ""
+healthchecks_environment_variable_s3_endpoint: ""
+healthchecks_environment_variable_s3_region: ""
+healthchecks_environment_variable_s3_timeout: 60
+
+# Integrations
+# See: https://healthchecks.io/docs/self_hosted_configuration/
+healthchecks_environment_variable_apprise_enabled: false
+
+healthchecks_environment_variable_discord_client_id: ""
+healthchecks_environment_variable_discord_client_secret: ""
+
+healthchecks_environment_variable_matrix_access_token: ""
+healthchecks_environment_variable_matrix_homeserver: ""
+healthchecks_environment_variable_matrix_user_id: ""
+
+healthchecks_environment_variable_mattermost_enabled: false
+
+healthchecks_environment_variable_msteams_enabled: false
+
+healthchecks_environment_variable_opsgenie_enabled: false
+
+healthchecks_environment_variable_pagertree_enabled: false
+
+healthchecks_environment_variable_pd_enabled: false
+healthchecks_environment_variable_pd_app_id: ""
+
+healthchecks_environment_variable_pushbullet_client_id: ""
+healthchecks_environment_variable_pushbullet_client_secret: ""
+
+healthchecks_environment_variable_pushover_api_token: ""
+healthchecks_environment_variable_pushover_emergency_expiration: 86400
+healthchecks_environment_variable_pushover_emergency_retry_delay: 300
+healthchecks_environment_variable_pushover_subscription_url: ""
+
+healthchecks_environment_variable_shell_enabled: false
+
+healthchecks_environment_variable_signal_cli_socket: ""
+
+healthchecks_environment_variable_slack_enabled: false
+healthchecks_environment_variable_slack_client_id: ""
+healthchecks_environment_variable_slack_client_secret: ""
+
+healthchecks_environment_variable_spike_enabled: false
+
+healthchecks_environment_variable_telegram_bot_name: ExampleBot
+healthchecks_environment_variable_telegram_token: ""
+
+healthchecks_environment_variable_trello_app_key: ""
+
+healthchecks_environment_variable_twilio_account: ""
+healthchecks_environment_variable_twilio_auth: ""
+healthchecks_environment_variable_twilio_from: ""
+healthchecks_environment_variable_twilio_use_whatsapp: false
+
+healthchecks_environment_variable_victorops_enabled: false
+
+healthchecks_environment_variable_webhooks_enabled: true
+
+healthchecks_environment_variable_zulip_enabled: false
+
 # Additional environment variables.
 healthchecks_environment_variables_additional_variables: ""
 

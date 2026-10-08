@@ -141,15 +141,33 @@ healthchecks_environment_variable_email_use_verification: false
 
 On Healthchecks you can add configuration settings of notification services such as ntfy, Gotify, etc. Refer to [this page](https://healthchecks.io/docs/configuring_notifications/) on the official documentation as well about how to configure them.
 
-To set up supported services, refer to the [upstream `.env.example` file](https://github.com/healthchecks/healthchecks/blob/master/docker/.env.example) for environment variables. You can pass those variables to the Healthchecks container with the `healthchecks_environment_variables_additional_variables` variable as below:
+Most integrations can be configured with dedicated `healthchecks_environment_variable_*` variables (see [`defaults/main.yml`](../defaults/main.yml) for the full list). For example:
+
+```yml
+healthchecks_environment_variable_discord_client_id: 123
+healthchecks_environment_variable_discord_client_secret: 456
+
+healthchecks_environment_variable_slack_enabled: true
+```
+
+For settings which do not have a dedicated variable, refer to the [upstream `.env.example` file](https://github.com/healthchecks/healthchecks/blob/master/docker/.env.example) and pass them to the Healthchecks container with the `healthchecks_environment_variables_additional_variables` variable as below:
 
 ```yml
 healthchecks_environment_variables_additional_variables: |
-  DISCORD_CLIENT_ID=123
-  DISCORD_CLIENT_SECRET=456
+  TWILIO_MESSAGING_SERVICE_SID=abc
 ```
 
 To actually have the services use (and get messages sent through them), you will need to adjust settings on the service's UI after the service is installed.
+
+### Enabling the Prometheus metrics endpoint (optional)
+
+Healthchecks can expose per-project metrics for [Prometheus](https://prometheus.io/) to scrape. To enable this, add the following configuration to your `vars.yml` file:
+
+```yml
+healthchecks_environment_variable_prometheus_enabled: true
+```
+
+Refer to [the official documentation](https://healthchecks.io/docs/configuring_prometheus/) about how to obtain the API key and configure Prometheus.
 
 ### Extending the configuration
 
