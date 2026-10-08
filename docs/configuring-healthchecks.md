@@ -147,7 +147,8 @@ Most integrations can be configured with dedicated `healthchecks_environment_var
 healthchecks_environment_variable_discord_client_id: 123
 healthchecks_environment_variable_discord_client_secret: 456
 
-healthchecks_environment_variable_slack_enabled: true
+# Hide the Microsoft Teams integration, which is enabled by default
+healthchecks_environment_variable_msteams_enabled: false
 ```
 
 For settings which do not have a dedicated variable, refer to the [upstream `.env.example` file](https://github.com/healthchecks/healthchecks/blob/master/docker/.env.example) and pass them to the Healthchecks container with the `healthchecks_environment_variables_additional_variables` variable as below:
@@ -159,15 +160,15 @@ healthchecks_environment_variables_additional_variables: |
 
 To actually have the services use (and get messages sent through them), you will need to adjust settings on the service's UI after the service is installed.
 
-### Enabling the Prometheus metrics endpoint (optional)
+### Prometheus metrics endpoint
 
-Healthchecks can expose per-project metrics for [Prometheus](https://prometheus.io/) to scrape. To enable this, add the following configuration to your `vars.yml` file:
+Healthchecks exposes per-project metrics for [Prometheus](https://prometheus.io/) to scrape. Refer to [the official documentation](https://healthchecks.io/docs/configuring_prometheus/) about how to obtain the API key and configure Prometheus.
+
+This is enabled by default. To disable it, add the following configuration to your `vars.yml` file:
 
 ```yml
-healthchecks_environment_variable_prometheus_enabled: true
+healthchecks_environment_variable_prometheus_enabled: false
 ```
-
-Refer to [the official documentation](https://healthchecks.io/docs/configuring_prometheus/) about how to obtain the API key and configure Prometheus.
 
 ### Extending the configuration
 
