@@ -127,7 +127,7 @@ healthchecks_environment_variable_email_host_password: ""
 # Specify the email address that emails will be sent from
 healthchecks_environment_variable_default_from_email: ""
 
-# Set to `true` to make Healthchecks use TLS encryption
+# Set to `true` to enable TLS encryption
 healthchecks_environment_variable_email_use_tls: false
 
 # Set to `true` to skip verification of the TLS certificate on the server
