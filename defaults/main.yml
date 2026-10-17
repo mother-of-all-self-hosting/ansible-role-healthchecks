@@ -346,6 +346,17 @@ healthchecks_environment_variable_master_badge_label: "{{ healthchecks_environme
 # Controls the USE_PAYMENTS environment variable
 healthchecks_environment_variable_use_payments: false
 
+# Controls the UWSGI_ADD_HEADER environment variable, which uWSGI reads as its `add-header` option.
+#
+# uWSGI (as configured in the Healthchecks container image) closes the connection after every response,
+# but does not announce it with a `Connection: close` header. It also sends a body in response to `HEAD` requests.
+# A reverse-proxy (like Traefik) which keeps connections alive may then reuse such a connection
+# and read the leftover body as the start of the next response, failing that request (HTTP 500/502).
+# Announcing `Connection: close` makes reverse-proxies not reuse connections.
+#
+# Set to an empty string to not add any header.
+healthchecks_environment_variable_uwsgi_add_header: "Connection: close"
+
 # Controls the INTEGRATIONS_ALLOW_PRIVATE_IPS environment variable
 healthchecks_environment_variable_integrations_allow_private_ips: false
 
