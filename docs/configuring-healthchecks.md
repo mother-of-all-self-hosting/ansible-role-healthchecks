@@ -182,7 +182,7 @@ healthchecks_environment_variable_gunicorn_workers: 4
 
 For other Gunicorn options, set `GUNICORN_CMD_ARGS` through `healthchecks_environment_variables_additional_variables`.
 
-When upgrading from v4, remove any `healthchecks_process_extra_arguments`, `healthchecks_process_extra_arguments_auto`, or `healthchecks_process_extra_arguments_custom` settings. The new container startup script does not accept arguments. Replace any `UWSGI_PROCESSES` override in `healthchecks_environment_variables_additional_variables` with `healthchecks_environment_variable_gunicorn_workers`, and migrate other uWSGI options to Gunicorn options where applicable.
+When upgrading from v4, remove `healthchecks_environment_variable_uwsgi_add_header` if configured. The uWSGI `Connection: close` workaround is no longer needed. Also remove any `healthchecks_process_extra_arguments`, `healthchecks_process_extra_arguments_auto`, or `healthchecks_process_extra_arguments_custom` settings. The new container startup script does not accept arguments. Replace any `UWSGI_PROCESSES` override in `healthchecks_environment_variables_additional_variables` with `healthchecks_environment_variable_gunicorn_workers`, and migrate other uWSGI options to Gunicorn options where applicable.
 
 If a background process (`sendalerts`, `sendreports`, or the optional SMTP listener) exits, the container exits too. The systemd service restarts the whole container after 30 seconds.
 

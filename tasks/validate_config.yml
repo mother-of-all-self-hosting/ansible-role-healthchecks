@@ -34,6 +34,8 @@
       {{ item.hint }}
   when: "lookup('ansible.builtin.varnames', ('^' + item.name + '$'), wantlist=True) | length > 0"
   loop:
+    - name: healthchecks_environment_variable_uwsgi_add_header
+      hint: "Remove this variable. Healthchecks v5.0 uses Gunicorn, so the uWSGI Connection: close workaround is no longer needed."
     - name: healthchecks_process_extra_arguments
       hint: "Remove this variable. Healthchecks v5.0's startup script does not accept process arguments. Use healthchecks_environment_variable_gunicorn_workers or healthchecks_environment_variables_additional_variables (GUNICORN_CMD_ARGS) to configure Gunicorn."
     - name: healthchecks_process_extra_arguments_auto
