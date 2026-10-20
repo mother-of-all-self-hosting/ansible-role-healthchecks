@@ -20,13 +20,10 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/{{ item }}.j2"
     dest: "{{ healthchecks_base_path }}/{{ item }}"
-    mode: "0640"
+    mode: "{{ '0750' if item == 'fetchstatus.py' else '0640' }}"
     owner: "{{ healthchecks_uid }}"
     group: "{{ healthchecks_gid }}"
-  with_items:
-    - env
-    - labels
-    - local_settings.py
+  with_items: "{{ ['env', 'labels', 'local_settings.py'] + (['fetchstatus.py'] if healthchecks_path_prefix != '/' else []) }}"
   register: healthchecks_support_files_result
 
 - name: Run if self-building of Healthchecks container image is not enabled

@@ -51,7 +51,7 @@ Tests a standard Healthchecks installation.
 
 ### `default-selfbuild`
 
-Tests a standard Healthchecks installation with self-building the container image.
+Tests a Healthchecks installation with self-building the container image and a URL path prefix, including the container health probe.
 
 ### `mariadb`
 

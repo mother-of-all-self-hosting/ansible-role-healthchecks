@@ -44,6 +44,7 @@ provisioner:
         healthchecks_gid: 1000
         healthchecks_scheme: http
         healthchecks_hostname: localhost
+        healthchecks_path_prefix: /healthchecks
         healthchecks_container_labels_traefik_enabled: false
         healthchecks_container_http_host_bind_port: 8000
         healthchecks_environment_variable_secret_key: lmxSDWFiwAz2apPWHuD0bd6SWumPBg8XEeQ2hxXoLFCwhjWNxysAom9Lahs2a5q7

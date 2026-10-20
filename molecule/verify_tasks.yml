@@ -64,6 +64,19 @@
     fail_msg: "Unexpected /api/v3/status/ body: {{ healthchecks_status.content | default('no response') }}"
     success_msg: "Healthchecks reports a live database connection"
 
+- name: Wait for the container's database health probe to pass
+  ansible.builtin.command:
+    argv:
+      - docker
+      - inspect
+      - "--format={{ '{{json .State.Health}}' }}"
+      - "{{ healthchecks_defaults.healthchecks_identifier }}"
+  register: healthchecks_container_health
+  changed_when: false
+  until: (healthchecks_container_health.stdout | from_json).Status == 'healthy'
+  retries: 12
+  delay: 5
+
 - name: Retrieve the Healthchecks login page
   ansible.builtin.uri:
     url: "{{ healthchecks_verify_base_url }}/accounts/login/"
@@ -208,11 +221,14 @@
 # hostname this scenario configures has none), which is why the ping below
 # is sent to the published port instead of to this URL verbatim.
 - name: Assert the ping URL is the one this role configured
+  vars:
+    healthchecks_verify_path_prefix: "{{ healthchecks_path_prefix | default(healthchecks_defaults.healthchecks_path_prefix) }}"
+    healthchecks_verify_ping_endpoint: "{{ healthchecks_scheme }}://{{ healthchecks_hostname }}{{ healthchecks_verify_path_prefix }}{{ '' if healthchecks_verify_path_prefix == '/' else '/' }}ping/"
   ansible.builtin.assert:
-    that: healthchecks_check_created.json.ping_url.startswith(healthchecks_scheme ~ '://' ~ healthchecks_hostname ~ '/ping/')
+    that: healthchecks_check_created.json.ping_url.startswith(healthchecks_verify_ping_endpoint)
     fail_msg: >-
       The check's ping URL is {{ healthchecks_check_created.json.ping_url }}, which is not under
-      {{ healthchecks_scheme }}://{{ healthchecks_hostname }}/ping/ as this role configures
+      {{ healthchecks_verify_ping_endpoint }} as this role configures
     success_msg: "The check's ping URL is {{ healthchecks_check_created.json.ping_url }}"
 
 - name: Ping the check

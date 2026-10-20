@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# The v5.0 /health middleware checks request.path, which includes
+# FORCE_SCRIPT_NAME. For subpath deployments, use the database-backed status
+# endpoint instead. Like requests forwarded by Traefik, this internal request
+# omits the prefix. A valid Host header is required by ALLOWED_HOSTS.
+import os
+from urllib.parse import urlsplit
+from urllib.request import Request, urlopen
+
+site_root = urlsplit(os.environ["SITE_ROOT"])
+request = Request(
+    "http://127.0.0.1:8000/api/v3/status/",
+    headers={"Host": site_root.netloc},
+)
+with urlopen(request, timeout=10) as response:
+    assert response.status == 200
+    assert response.read().strip() == b"OK"
+
+print("Status OK")

@@ -174,6 +174,8 @@ healthchecks_environment_variable_prometheus_enabled: false
 
 Healthchecks v5.0 uses Gunicorn. The role provides a writable `/tmp` in memory (limited to 256 MiB) for its temporary files while keeping the container's root filesystem read-only.
 
+For URL subpaths (`healthchecks_path_prefix` other than `/`), the role replaces the image's health probe with a database status request that supports the configured prefix.
+
 By default, Gunicorn starts four workers. To change this, set:
 
 ```yaml
