@@ -16,7 +16,7 @@ healthchecks_base_path: "/{{ healthchecks_identifier }}"
 healthchecks_data_path: "{{ healthchecks_base_path }}/data"
 
 # renovate: datasource=docker depName=docker.io/healthchecks/healthchecks
-healthchecks_version: v4.4
+healthchecks_version: v5.0
 
 healthchecks_uid: ""
 healthchecks_gid: ""
@@ -127,12 +127,6 @@ healthchecks_container_labels_additional_labels_custom: []
 healthchecks_container_extra_arguments: "{{ healthchecks_container_extra_arguments_auto + healthchecks_container_extra_arguments_custom }}"
 healthchecks_container_extra_arguments_auto: []
 healthchecks_container_extra_arguments_custom: []
-
-# A list of extra arguments to pass to the process inside the container
-# Example: ['--SOME_ARGUMENT']
-healthchecks_process_extra_arguments: "{{ healthchecks_process_extra_arguments_auto + healthchecks_process_extra_arguments_custom }}"
-healthchecks_process_extra_arguments_auto: []
-healthchecks_process_extra_arguments_custom: []
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
@@ -358,6 +352,9 @@ healthchecks_environment_variable_use_payments: false
 #
 # Set to an empty string to not add any header.
 healthchecks_environment_variable_uwsgi_add_header: "Connection: close"
+
+# Controls the GUNICORN_WORKERS environment variable (number of web worker processes).
+healthchecks_environment_variable_gunicorn_workers: 4
 
 # Controls the INTEGRATIONS_ALLOW_PRIVATE_IPS environment variable
 healthchecks_environment_variable_integrations_allow_private_ips: false

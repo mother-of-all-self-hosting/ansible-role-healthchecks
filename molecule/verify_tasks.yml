@@ -43,15 +43,10 @@
   changed_when: false
   loop: "{{ healthchecks_verify_units }}"
 
-# An active unit says nothing about readiness here: uwsgi runs
-# `manage.py migrate` from its `hook-pre-app` while the unit is already
-# active, and it serves pages throughout. Worse, a Healthchecks that cannot
-# reach its database at all still answers `/` and `/accounts/login/` with a
-# fully rendered 200 - the login page needs no database until the form is
-# submitted. `/api/v3/status/` is the one endpoint that opens a database
-# connection on demand (it is what the image's own HEALTHCHECK probes), so
-# it is the only honest readiness gate, and the only one that a scenario
-# with broken database wiring cannot pass.
+# The unit becomes active before the container finishes migrations and starts
+# Gunicorn. Once it starts serving, the login page can return 200 without using
+# the database. Probe the database-backed status endpoint to verify database
+# connectivity too.
 - name: Wait for the Healthchecks status endpoint to report a live database (up to 10m)
   ansible.builtin.uri:
     url: "{{ healthchecks_verify_base_url }}/api/v3/status/"
@@ -90,6 +85,34 @@
       - "'name=\"csrfmiddlewaretoken\"' in healthchecks_login_page.content"
     fail_msg: "The Healthchecks login page did not render a sign-in form for this site"
     success_msg: "The Healthchecks login page renders a sign-in form for '{{ healthchecks_defaults.healthchecks_environment_variable_site_name }}'"
+
+# Reuse a client across alternating HEAD and GET requests, as a reverse proxy
+# would. uWSGI's handling of HEAD and connection closure caused intermittent
+# malformed HTTP responses with Traefik (healthchecks/healthchecks#1349).
+- name: Verify repeated HEAD and GET requests have valid HTTP responses
+  ansible.builtin.command:
+    argv:
+      - python3
+      - -c
+      - |
+        import http.client
+        from urllib.parse import urlsplit
+
+        url = urlsplit("{{ healthchecks_verify_base_url }}")
+        connection = http.client.HTTPConnection(url.hostname, url.port, timeout=10)
+        try:
+            for _ in range(20):
+                connection.request("HEAD", "/accounts/login/")
+                response = connection.getresponse()
+                assert response.status == 200, response.status
+                assert response.read() == b"", "HEAD returned a body"
+                connection.request("GET", "/accounts/login/")
+                response = connection.getresponse()
+                assert response.status == 200, response.status
+                assert b'name="email"' in response.read(), "GET did not return the login form"
+        finally:
+            connection.close()
+  changed_when: false
 
 # The version is read out of the running application (which derives it from the
 # CHANGELOG.md shipped inside the image) rather than from an image label,
