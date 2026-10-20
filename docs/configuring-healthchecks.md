@@ -69,7 +69,7 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 ### Configuring database
 
-#### Specify database (optional)
+#### Specify database
 
 Healthchecks can use either a MySQL compatible database, Postgres, or SQLite, and you need to choose one.
 
