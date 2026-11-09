@@ -50,8 +50,8 @@ provisioner:
 
         # Variables required for Healthchecks to connect to the Postgres database (via Unix socket)
         healthchecks_database_type: postgres
-        healthchecks_database_postgres_username: my_database_username
-        healthchecks_database_postgres_password: my_database_password
+        healthchecks_database_postgres_username: /#@my_database_username?%
+        healthchecks_database_postgres_password: /#@my_database_password?%
         healthchecks_database_name: healthchecks
         healthchecks_database_postgres_socket_enabled: true
         healthchecks_database_postgres_socket_path_host: "{{ postgres_run_path }}"

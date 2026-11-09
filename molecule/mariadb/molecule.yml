@@ -50,8 +50,8 @@ provisioner:
 
         # Variables required for Healthchecks to connect to the MariaDB database (via Unix socket)
         healthchecks_database_type: mysql
-        healthchecks_database_mysql_username: my_database_username
-        healthchecks_database_mysql_password: my_database_password
+        healthchecks_database_mysql_username: /#@my_database_username?%
+        healthchecks_database_mysql_password: /#@my_database_password?%
         healthchecks_database_name: healthchecks
         healthchecks_database_mysql_socket_enabled: true
         healthchecks_database_mysql_socket_path_host: "{{ mariadb_run_path }}"
