@@ -19,7 +19,7 @@ traefik.http.middlewares.{{ healthchecks_identifier }}-basic-auth.basicauth.user
 {% endif %}
 
 {% if healthchecks_container_labels_traefik_path_prefix != '/' %}
-traefik.http.middlewares.{{ healthchecks_identifier }}-slashless-redirect.redirectregex.regex=^({{ healthchecks_container_labels_traefik_path_prefix | quote }})$
+traefik.http.middlewares.{{ healthchecks_identifier }}-slashless-redirect.redirectregex.regex=^(https?://[^/]+{{ healthchecks_container_labels_traefik_path_prefix | regex_escape }})$
 traefik.http.middlewares.{{ healthchecks_identifier }}-slashless-redirect.redirectregex.replacement=${1}/
 {% set middlewares = middlewares + [healthchecks_identifier + '-slashless-redirect'] %}
 {% endif %}
