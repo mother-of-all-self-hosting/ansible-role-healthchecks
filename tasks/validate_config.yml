@@ -49,12 +49,8 @@
       You need to define a required configuration setting (`{{ item }}`).
   when: "lookup('vars', item, default='') | string | length == 0"
   with_items:
-    - healthchecks_identifier
     - healthchecks_uid
     - healthchecks_gid
-    - healthchecks_hostname
-    - healthchecks_path_prefix
-    - healthchecks_container_network
     - healthchecks_database_type
     - healthchecks_environment_variable_secret_key
 
